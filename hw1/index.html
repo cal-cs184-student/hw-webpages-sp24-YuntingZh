@@ -41,9 +41,49 @@
     <section id="task1">
         <div class="container">
             <h2 class="section-title">Task 1: Rasterization of Triangles</h2>
+            <h3>Overview</h3>
             <p>
-                <!-- Write a brief introduction or overview of Task 1 here -->
-                Overview
+                The task involves implementing basic triangle rasterization without supersampling. The goal is to
+                rasterize
+                triangles using the point-in-triangle test for each pixel, with a sample point located at the center of
+                each
+                pixel. The implementation should ensure that the triangle is drawn correctly regardless of its winding
+                order
+                and that no edges are left un-rasterized. The approach involves calculating the triangle's bounding box
+                and
+                iterating over each pixel within the bounding box to perform the point-in-triangle test. The details of
+                the
+                steps are: </p>
+            <ul class="abcd-list">
+                <li>
+                    <strong>Finding the Bounding Box:</strong> The first step is calculating the smallest rectangle
+                    (bounding
+                    box) that completely encloses the triangle. This is done by finding the minimum and maximum X and Y
+                    coordinates among the triangle's three vertices. This step is crucial because it limits the area
+                    needed
+                    to check for filling in the triangle, making the process more efficient.
+                </li>
+                <li>
+                    <strong>Iterating Over Each Pixel:</strong> Next, the code loops through each pixel within this
+                    bounding box.
+                    For each pixel, it determines if the pixel's center is inside the triangle.
+                </li>
+                <li>
+                    <strong>Point-in-Triangle Test:</strong> Barycentric coordinates must be applied to decide if a
+                    pixel is part of
+                    the triangle. By adding 0.5 to both the X and Y coordinates of the pixel, it can be ensured that the
+                    test is
+                    done at the center of the pixel, not the corner. This is a more accurate way to color the triangle.
+                </li>
+                <li>
+                    <strong>Coloring the Pixel:</strong> If the center of a pixel is found to be inside the triangle,
+                    the pixel is colored
+                    with the specified color.
+                </li>
+            </ul>
+
+            <!-- More about Point-in-Triangle Test -->
+            <p>
                 In Lecture 2, we discussed how to test whether a point is inside a triangle. A common approach is the
                 vector-based method.
                 For me, the vector method is intuitive, essentially involving a simple check of the cross product values
@@ -111,11 +151,13 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
             <img src="../images/Task1_checkRounding.png" alt="checkRounding">
             <div class="image-container">
                 <img class="uniform-pictures" src="../images/Task1_svg3notfilled.png" alt="Task 1 - issue">
-                
+
                 <img class="uniform-pictures" src="../images/Task1_problemFixed.png" alt="Task 1 - test 3">
                 <img class="uniform-pictures" src="../images/Task1_test6img.png" alt="Task 1 - test 6">
+                <img class="uniform-pictures" src="../images/Task1_test4SVGwithPixelInspector.png"
+                    alt="Task 1 - test 4">
             </div>
-            
+
             <p class="img-description">Fixed - svg3notfilled</p>
             <!-- Add more paragraphs or images as needed -->
         </div>

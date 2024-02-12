@@ -127,5 +127,15 @@ img {
     height: auto;
     margin: 5px; /* Add some margin between images */
 }
+.abcd-list {
+    list-style: none;
+    counter-reset: abcd-counter;
+    padding-left: 0;
+}
 
-  
+.abcd-list li::before {
+    content: counter(abcd-counter, lower-alpha) ". ";
+    counter-increment: abcd-counter;
+    font-weight: bold;
+    margin-right: 5px;
+}
