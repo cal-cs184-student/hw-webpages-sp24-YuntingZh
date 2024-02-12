@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+}
+
+code {
+    background-color: #2d2d2d; /* Dark background for the code block */
+    color: #c792ea; /* Purpleish text color */
+    padding: 10px;
+    display: block;
+    margin: 10px 0;
+    overflow-x: auto;
+    border-radius: 5px; /* Optional: adds rounded corners to the code block */
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #2d2d2d;
+    color: white;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #c792ea 3px solid;
+}
+
+header a {
+    color: #ffffff;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+header ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+header li {
+    float: left;
+    display: inline;
+    padding: 0 20px 0 20px;
+}
+
+header #branding {
+    float: left;
+}
+
+header #branding h1 {
+    margin: 0;
+}
+
+header nav {
+    float: right;
+    margin-top: 10px;
+}
+
+header .highlight,
+header .current a {
+    color: #e8491d;
+    font-weight: bold;
+}
+
+header a:hover {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.section-title {
+    color: #e8491d;
+    margin: 0;
+    text-align: center;
+    padding: 10px 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.img-wrap {
+    margin: 10px;
+    text-align: center;
+}
+
+.img-wrap img {
+    width: 100%;
+    max-width: 200px;
+    /* Adjust as needed */
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.img-wrap a:hover img {
+    border-color: #50b3a2;
+}
+
+.img-description {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+.image-container {
+    display: flex; /* Use flexbox */
+    flex-wrap: wrap; /* Wrap items to new line if necessary */
+}
+
+.uniform-pictures {
+    width: 300px; 
+    height: auto;
+    margin: 5px; /* Add some margin between images */
+}
+
+  
