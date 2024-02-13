@@ -271,7 +271,7 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
             <img class="uniform-pictures" src="../images/Task3_code.png" alt="Task 3">
             <p>I started by using an affine
                 transformation matrix, more specifically, a translation matrix:
-            <code>Matrix3x3(1, 0, dx,<br>
+                <code>Matrix3x3(1, 0, dx,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, 1, dy,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, 0, 1);</code>
 
@@ -296,7 +296,38 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
 
         </div>
     </section>
+    <section id="task4">
+        <div class="container">
+            <h2 class="section-title">Task 4: Barycentric coordinates</h2>
+            <h3>Overview</h3>
+            <p>
+                Barycentric coordinates represent a system for expressing the location of a point within a triangle
+                relative to its vertices. In this system, the position of any point can be described as a combination of
+                weights assigned to each vertex of the triangle. These weights indicate how much influence each vertex
+                has on the final position of the point, and they always add up to one to ensure the point remains within
+                the confines of the triangle. Barycentric coordinates are particularly useful for interpolating values
+                across the surface of a triangle. This is essential for tasks such as color blending, where the colors
+                defined at the vertices of a triangle need to be smoothly transitioned across its interior.
+            </p>
+            <img src="../images/Task4_colorInterpolation.png" alt="Task 4 code">
 
+            <p>
+                To rasterize a triangle onto the screen, first, the triangle's vertices are given by (x0, y0), (x1, y1),
+                and (x2, y2). Each vertex has an associated color c0, c1, and c2. The colors of the interior pixels are
+                interpolated based on the vertices' colors using barycentric coordinates. 
+                I have already mentioned this method of Barycentric interpolation in task 1. Basically, it still
+                involves first creating a bounding box and then calculating the three points alpha, beta, and gamma.
+                my function rasterize_interpolated_color_triangle,I perform the >= 0 check, and by using gamma = 1.0f -
+                alpha - beta, I have implicitly included the <= 1.
+                Final step is <strong>Interpolate the color and fill the pixel</strong> 
+                Once we've confirmed the pixel is inside the triangle, we interpolate the color based on the
+                barycentric coordinates. The fill_pixel function colors the pixel at (x, y) with the interpolated
+                color. If you're using supersampling, ensure that fill_pixel properly combines the supersampled
+                colors. 
+            </p>
+            <img src="../images/Task4_final.png" alt="Task 4 code">
+        </div>
+    </section>
     <section id="progress-images">
         <div class="container">
             <h2 class="section-title">Work in Progress</h2>
@@ -312,6 +343,8 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
             </div>
         </div>
     </section>
+
+
 
     <!-- Add more sections as needed -->
 
