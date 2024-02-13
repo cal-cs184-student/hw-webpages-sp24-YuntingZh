@@ -14,7 +14,9 @@ code {
     margin: 10px 0;
     overflow-x: auto;
     border-radius: 5px; /* Optional: adds rounded corners to the code block */
+    font-family: monospace; /* Use a monospace font for better readability */
 }
+
 
 .container {
     width: 80%;
@@ -65,7 +67,7 @@ header nav {
 
 header .highlight,
 header .current a {
-    color: #e8491d;
+    color:#c792ea ;
     font-weight: bold;
 }
 
@@ -75,7 +77,7 @@ header a:hover {
 }
 
 .section-title {
-    color: #e8491d;
+    color: #c792ea ;
     margin: 0;
     text-align: center;
     padding: 10px 0;

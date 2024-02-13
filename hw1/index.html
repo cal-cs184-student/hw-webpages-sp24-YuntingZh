@@ -165,46 +165,109 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
     <section id="task2">
         <div class="container">
             <h2 class="section-title">Task 2: Antialiasing by Supersampling</h2>
+            <h3>Overview</h3>
             <p>
-                <!-- Write a brief introduction or overview of Task 1 here -->
+                The main goal is to reduce the jagged edges (aliasing) that occur when rendering triangles.
+                Supersampling achieves this by taking multiple samples within each pixel, determining how much
+                of the pixel is covered by the triangle, and then averaging these samples to get the final color
+                of the pixel. This approach simulates a higher-resolution rendering, which, when scaled down,
+                produces smoother edges.
+                Approach and Implementation:
+                a. The process starts by calculating the number of samples to be taken within each pixel,
+                determined by the square root of the sample_rate. The samples are spread across a grid within
+                each pixel. For example, with a sample_rate of 4, a 2x2 grid is created inside each pixel.
+                b. Rasterizing with Supersampling: The triangle is rasterized at a higher resolution equivalent
+                to the number of samples. Each sample's color is determined based on whether it falls within the
+                triangle using the point-in-triangle test.
+                c. Resolving Supersamples to Framebuffer: After rasterizing at a higher resolution, the color of
+                each pixel in the framebuffer is computed by averaging the colors of the corresponding samples.
+                This effectively downsamples the higher-resolution image to the display resolution, resulting in
+                smoother edges.
             </p>
+            <h3>Breakdown of Modifications</h3>
             <p>
-            <section id="task2">
-                <div class="container">
-                    <h2 class="section-title">Task 2: Antialiasing by Supersampling</h2>
-                    <p>
-                        <!-- Write a brief introduction or overview of Task 1 here -->
-                    </p>
-                    <p>
-                        Supersampling is a technique where you render the scene at a higher resolution than the final
-                        output and then downsample to the target resolution. This process smooths out the edges and
-                        reduces the aliasing effects.
-                    </p>
+                a. Bounding Box Calculation:
+                Identify the minimum and maximum X and Y coordinates among the vertices of the triangle to
+                calculate the bounding box. This step is vital as it narrows down the sample area, making the
+                process more efficient.
 
-                    <p>
-                        <!-- Add detailed explanation of your approach, implementation, and problem-solving for Task 1 here -->
-                    </p>
 
-                    <!-- If you have images to add -->
-                    <img src="./images/task1_example.png" alt="Task 1 Example">
-                    <p class="img-description">Description or caption for the image</p>
-                    <!-- Add more paragraphs or images as needed -->
-                </div>
-            </section>
+                b. Iterative Pixel Sampling: Loop through each pixel within the bounding box and subdivide it
+                into the number of samples determined by the sample_rate. Calculate each sample's exact position
+                within the pixel using the sampleStep.
+
+                This nested loop iterates over every pixel within the bounding box and further divides each
+                pixel according to the supersampling rate. It calculates the position of each sample within a
+                pixel (sampleX, sampleY) by offsetting it based on the sampleStep and ensuring the sample point
+                is centered within its portion of the pixel with +0.5f.
+
+                c. Point-in-Triangle Test for Samples: For each sample, these checks if it lies within the
+                triangle using the isPointInTriangle function. If so, the sample's color is set in
+                sample_buffer. The sample_index calculation ensures that each sample within the supersampled
+                grid is correctly mapped to its position in the buffer.
+
+                d. Downsampling: Averaging Samples to Final Pixel Colors
+                After rasterizing the scene at a higher resolution using supersampling, this code averages the
+                colors of the supersamples for each pixel to compute the pixel's final color. It goes through
+                the framebuffer pixel by pixel, collects the corresponding supersampled colors, averages them,
+                and writes the result back to the framebuffer in a format suitable for display. This is the
+                "downsampling" step, where the high-resolution supersampled image is reduced back to the
+                framebuffer's resolution.
+
 
             </p>
-
+            <div class="image-container">
+                <img class="uniform-pictures" src="../images/Task2_fill_pixel.png" alt="Task 2 - fill_pixel.png">
+                <img class="uniform-pictures" src="../images/Task2_rasterizeTriangle.png" alt="Task 2 - rasterizeTriangle">
+                <img class="uniform-pictures" src="../images/Task2_resolve_to_framebuffer.png" alt="Task 2 - resolve_to_framebuffer">
+                <img class="uniform-pictures" src="../images/Task2_set_sample_rate.png" alt="Task 2 - resolve_to_framebuffer">
+                <img class="uniform-pictures" src="../images/Task2_set_framebuffer_target.png" alt="Task 2 - resolve_to_framebuffer">
+            </div>
             <p>
-                <!-- Add detailed explanation of your approach, implementation, and problem-solving for Task 1 here -->
-            </p>
+                This implementation of supersampling for antialiasing effectively smooths out jagged edges by
+                averaging multiple samples within each pixel, simulating a higher-resolution rendering that,
+                when scaled back, results in a visually smoother image.
+                Once the code can be run, test4.svg can be rendered. The differences in the image quality are
+                due to the varying levels of supersampling used in rendering the SVGs.
 
-            <!-- If you have images to add -->
-            <img src="./images/task1_example.png" alt="Task 1 Example">
-            <p class="img-description">Description or caption for the image</p>
-            <!-- Add more paragraphs or images as needed -->
+
+            </p>
+            <div class="image-container">
+                <img class="uniform-pictures" src="../images/Task2_sampleRate1.png" alt="Task 2 - sampleRate1">
+                <img class="uniform-pictures" src="../images/Task2_sampleRate4.png" alt="Task 2 - sampleRate4">
+                <img class="uniform-pictures" src="../images/Task2_sampleRate16.png" alt="Task 2 - sampleRate16">
+            </div>
+            <p>
+
+                Sample Rate 1: This is essentially no supersampling at all. Each pixel is sampled once, and its
+                color is determined by whether the center of the pixel lies within the triangle. This results in
+                sharper edges because there's no averaging of color. The pixel is either fully the triangle's
+                color or not, creating a jagged appearance known as aliasing.
+                Sample Rate 4: This involves supersampling with 4 samples per pixel, arranged in a 2x2 grid
+                within each pixel. Each sample is tested to see if it lies within the triangle. The final color
+                of the pixel is an average of these samples. This begins to smooth out the edges of the
+                triangles, as the color of the pixels at the edge of the triangle is a mix of the triangle color
+                and the background, depending on how many samples are inside the triangle.
+                Sample Rate 16: With 16 samples per pixel arranged in a 4x4 grid, there's an even more
+                significant averaging effect. The edges of the triangles become much smoother (or "blurrier") as
+                more samples around the edge contribute to the average, creating a gradient effect from the
+                color of the triangle to the background. This dramatically reduces the jagged edges and can make
+                the image appear less sharp, as finer details may be lost in the averaging process.
+                In summary, the increase in sample rate smooths out the edges by averaging more samples within
+                each pixel, which blends the colors at the boundaries of the triangles. However, the trade-off
+                is that higher sample rates can make the image look less appealing as the pixel colors become a
+                mix of the triangle and background colors.
+            </p>
+    </section>
+    <section id="task3">
+        <div class="container">
+            <h2 class="section-title">Task 3: Transforms</h2>
+            <h3>Overview</h3>
+            <p>
+                <!-- Insert your overview here -->
+            </p>
         </div>
     </section>
-
 
     <section id="progress-images">
         <div class="container">
