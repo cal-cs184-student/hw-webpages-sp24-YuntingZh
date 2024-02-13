@@ -314,18 +314,120 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
             <p>
                 To rasterize a triangle onto the screen, first, the triangle's vertices are given by (x0, y0), (x1, y1),
                 and (x2, y2). Each vertex has an associated color c0, c1, and c2. The colors of the interior pixels are
-                interpolated based on the vertices' colors using barycentric coordinates. 
+                interpolated based on the vertices' colors using barycentric coordinates.
                 I have already mentioned this method of Barycentric interpolation in task 1. Basically, it still
                 involves first creating a bounding box and then calculating the three points alpha, beta, and gamma.
                 my function rasterize_interpolated_color_triangle,I perform the >= 0 check, and by using gamma = 1.0f -
-                alpha - beta, I have implicitly included the <= 1.
-                Final step is <strong>Interpolate the color and fill the pixel</strong> 
-                Once we've confirmed the pixel is inside the triangle, we interpolate the color based on the
-                barycentric coordinates. The fill_pixel function colors the pixel at (x, y) with the interpolated
-                color. If you're using supersampling, ensure that fill_pixel properly combines the supersampled
-                colors. 
+                alpha - beta, I have implicitly included the <= 1. Final step is <strong>Interpolate the color and fill
+                    the pixel</strong>
+                    Once we've confirmed the pixel is inside the triangle, we interpolate the color based on the
+                    barycentric coordinates. The fill_pixel function colors the pixel at (x, y) with the interpolated
+                    color. If you're using supersampling, ensure that fill_pixel properly combines the supersampled
+                    colors.
             </p>
             <img src="../images/Task4_final.png" alt="Task 4 code">
+        </div>
+    </section>
+    <section id="task5">
+        <div class="container">
+            <h2 class="section-title">Task 5: Barycentric coordinates</h2>
+            <h3>Overview</h3>
+            <p>
+                Pixel sampling is like deciding how to mix your paint colors when you're zooming in on a tiny part of
+                your painting. It wants the colors to blend nicely, so there are no harsh lines or blocky pixels. There
+                are two types of pixel sampling:
+            <ul class="abcd-list">
+                <li>
+                    Nearest Sampling (P_NEAREST): This is like using a big, broad brush to dab paint onto a canvas. It's
+                    quick and straightforward, but the result can look a bit boxy because it is just picking the closest
+                    color from a palette for each pixel without any blending.
+                </li>
+                <li>
+                    Bilinear Sampling (P_LINEAR):This is like using a finer brush and carefully blending the colors from
+                    a
+                    palette to get just the right shade for each tiny spot. Bilinear sampling blends the four closest
+                    colors
+                    (or texels, in texture terms) to smooth out the texture, making everything look more natural and
+                    less
+                    blocky.
+                </li>
+            </ul>
+            <h3>sample_nearest</h3>
+            <pre><code>
+            Color Texture::sample_nearest(Vector2D uv, int level) {
+                // Check if the mipmap level is valid
+                if (level < 0 || level >= mipmap.size()) {
+                    // Invalid level, return magenta
+                    return Color(1, 0, 1);
+                }
+          
+                auto& mip = mipmap[level];
+                int width = mip.width;
+                int height = mip.height;
+          
+                // Convert (u, v) to texel space
+                int u = static_cast<int>(uv.x * width - 0.5f);
+                int v = static_cast<int>(uv.y * height - 0.5f);
+          
+                // Clamp coordinates to the texture dimensions
+                u = std::max(0, std::min(u, width - 1));
+                v = std::max(0, std::min(v, height - 1));
+          
+                // Retrieve and return the texel color
+                return mip.get_texel(u, v);
+            }
+        </code></pre>
+        <h3>sample_bilinear</h3>
+            <pre><code>
+                Color Texture::sample_bilinear(Vector2D uv, int level) {
+                    //Task5
+                    if (level &lt; 0 || level &gt;= mipmap.size()) {
+                        // Invalid level, return magenta
+                        return Color(1, 0, 1);
+                    }
+                
+                    auto&amp; mip = mipmap[level];
+                    int width = mip.width;
+                    int height = mip.height;
+                
+                    // Convert (u, v) to texel space
+                    float u = uv.x * width;
+                    float v = uv.y * height;
+                
+                    // Calculate the texel indices
+                    int u1 = floor(u);
+                    int v1 = floor(v);
+                    int u2 = u1 + 1;
+                    int v2 = v1 + 1;
+                
+                    // Clamp to texture dimensions to avoid overflow
+                    u1 = std::max(0, std::min(u1, width - 1));
+                    v1 = std::max(0, std::min(v1, height - 1));
+                    u2 = std::max(0, std::min(u2, width - 1));
+                    v2 = std::max(0, std::min(v2, height - 1));
+                
+                    // Retrieve the texel colors
+                    Color c00 = mip.get_texel(u1, v1);
+                    Color c10 = mip.get_texel(u2, v1);
+                    Color c01 = mip.get_texel(u1, v2);
+                    Color c11 = mip.get_texel(u2, v2);
+                
+                    // Calculate fractional parts for interpolation
+                    float s = u - u1;
+                    float t = v - v1;
+                
+                    // Perform bilinear interpolation
+                    Color c0 = c00 * (1 - s) + c10 * s; // Interpolate along u
+                    Color c1 = c01 * (1 - s) + c11 * s; // Interpolate along u
+                    Color c = c0 * (1 - t) + c1 * t;    // Interpolate along v
+                
+                    return c;
+                    // return magenta for invalid level
+                    //return Color(1, 0, 1);
+                }
+                    </code></pre>
+
+
         </div>
     </section>
     <section id="progress-images">
