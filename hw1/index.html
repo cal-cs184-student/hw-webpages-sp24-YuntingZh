@@ -218,10 +218,14 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
             </p>
             <div class="image-container">
                 <img class="uniform-pictures" src="../images/Task2_fill_pixel.png" alt="Task 2 - fill_pixel.png">
-                <img class="uniform-pictures" src="../images/Task2_rasterizeTriangle.png" alt="Task 2 - rasterizeTriangle">
-                <img class="uniform-pictures" src="../images/Task2_resolve_to_framebuffer.png" alt="Task 2 - resolve_to_framebuffer">
-                <img class="uniform-pictures" src="../images/Task2_set_sample_rate.png" alt="Task 2 - resolve_to_framebuffer">
-                <img class="uniform-pictures" src="../images/Task2_set_framebuffer_target.png" alt="Task 2 - resolve_to_framebuffer">
+                <img class="uniform-pictures" src="../images/Task2_rasterizeTriangle.png"
+                    alt="Task 2 - rasterizeTriangle">
+                <img class="uniform-pictures" src="../images/Task2_resolve_to_framebuffer.png"
+                    alt="Task 2 - resolve_to_framebuffer">
+                <img class="uniform-pictures" src="../images/Task2_set_sample_rate.png"
+                    alt="Task 2 - resolve_to_framebuffer">
+                <img class="uniform-pictures" src="../images/Task2_set_framebuffer_target.png"
+                    alt="Task 2 - resolve_to_framebuffer">
             </div>
             <p>
                 This implementation of supersampling for antialiasing effectively smooths out jagged edges by
@@ -263,9 +267,33 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
         <div class="container">
             <h2 class="section-title">Task 3: Transforms</h2>
             <h3>Overview</h3>
-            <p>
-                <!-- Insert your overview here -->
-            </p>
+            <p><strong>Task 3</strong> requires me to implement the three transforms.</p>
+            <img class="uniform-pictures" src="../images/Task3_code.png" alt="Task 3">
+            <p>I started by using an affine
+                transformation matrix, more specifically, a translation matrix:
+            <code>Matrix3x3(1, 0, dx,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, 1, dy,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, 0, 1);</code>
+
+            <p>According to the class content: When this matrix is applied to a vector or a point in 2D space, it
+                translates (moves) the point by <em>dx</em> units along the X-axis and <em>dy</em> units along the
+                Y-axis.</p>
+
+            <p>Then, I created a 3x3 matrix for scaling transformations in a 2D space:</p>
+            <code>Matrix3x3(sx, 0, 0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0, sy, 0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,  0, 1);</code>
+
+            <p>When this scaling matrix is applied to a point or a vector in 2D space, it scales (enlarges or shrinks)
+                the coordinates of that point. If <em>sx</em> and <em>sy</em> are greater than 1, the point will be
+                scaled up (enlarged); if they are between 0 and 1, the point will be scaled down (shrunk).</p>
+
+            <p>The third part I need to implement is the <code>rotate(float deg)</code> function, rotating an object
+                around the origin in a 2D plane. As discussed in class, the equation I need to use is as follows:</p>
+            <code>Matrix3x3(cos_theta, -sin_theta, 0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin_theta,  cos_theta, 0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,          0,         1);</code>
+
         </div>
     </section>
 
