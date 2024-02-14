@@ -37,7 +37,6 @@
     </section>
 
     <!-- Add sections for each task here -->
-    <!-- Task 1 Section -->
     <section id="task1">
         <div class="container">
             <h2 class="section-title">Task 1: Rasterization of Triangles</h2>
@@ -377,78 +376,228 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
                 return mip.get_texel(u, v);
             }
         </code></pre>
-        <h3>sample_bilinear</h3>
+            <h3>sample_bilinear</h3>
             <pre><code>
                 Color Texture::sample_bilinear(Vector2D uv, int level) {
-                    //Task5
-                    if (level &lt; 0 || level &gt;= mipmap.size()) {
-                        // Invalid level, return magenta
-                        return Color(1, 0, 1);
-                    }
+                //Task5
+                if (level &lt; 0 || level &gt;= mipmap.size()) {
+                // Invalid level, return magenta
+                return Color(1, 0, 1);
+                }
                 
-                    auto&amp; mip = mipmap[level];
-                    int width = mip.width;
-                    int height = mip.height;
+                auto&amp; mip = mipmap[level];
+                int width = mip.width;
+                int height = mip.height;
                 
-                    // Convert (u, v) to texel space
-                    float u = uv.x * width;
-                    float v = uv.y * height;
+                // Convert (u, v) to texel space
+                float u = uv.x * width;
+                float v = uv.y * height;
                 
-                    // Calculate the texel indices
-                    int u1 = floor(u);
-                    int v1 = floor(v);
-                    int u2 = u1 + 1;
-                    int v2 = v1 + 1;
+                // Calculate the texel indices
+                int u1 = floor(u);
+                int v1 = floor(v);
+                int u2 = u1 + 1;
+                int v2 = v1 + 1;
                 
-                    // Clamp to texture dimensions to avoid overflow
-                    u1 = std::max(0, std::min(u1, width - 1));
-                    v1 = std::max(0, std::min(v1, height - 1));
-                    u2 = std::max(0, std::min(u2, width - 1));
-                    v2 = std::max(0, std::min(v2, height - 1));
+                // Clamp to texture dimensions to avoid overflow
+                u1 = std::max(0, std::min(u1, width - 1));
+                v1 = std::max(0, std::min(v1, height - 1));
+                u2 = std::max(0, std::min(u2, width - 1));
+                v2 = std::max(0, std::min(v2, height - 1));
                 
-                    // Retrieve the texel colors
-                    Color c00 = mip.get_texel(u1, v1);
-                    Color c10 = mip.get_texel(u2, v1);
-                    Color c01 = mip.get_texel(u1, v2);
-                    Color c11 = mip.get_texel(u2, v2);
+                // Retrieve the texel colors
+                Color c00 = mip.get_texel(u1, v1);
+                Color c10 = mip.get_texel(u2, v1);
+                Color c01 = mip.get_texel(u1, v2);
+                Color c11 = mip.get_texel(u2, v2);
                 
-                    // Calculate fractional parts for interpolation
-                    float s = u - u1;
-                    float t = v - v1;
+                // Calculate fractional parts for interpolation
+                float s = u - u1;
+                float t = v - v1;
                 
-                    // Perform bilinear interpolation
-                    Color c0 = c00 * (1 - s) + c10 * s; // Interpolate along u
-                    Color c1 = c01 * (1 - s) + c11 * s; // Interpolate along u
-                    Color c = c0 * (1 - t) + c1 * t;    // Interpolate along v
+                // Perform bilinear interpolation
+                Color c0 = c00 * (1 - s) + c10 * s; // Interpolate along u
+                Color c1 = c01 * (1 - s) + c11 * s; // Interpolate along u
+                Color c = c0 * (1 - t) + c1 * t; // Interpolate along v
                 
-                    return c;
-                    // return magenta for invalid level
-                    //return Color(1, 0, 1);
+                return c;
+                // return magenta for invalid level
+                //return Color(1, 0, 1);
                 }
                     </code></pre>
 
 
         </div>
-        <img src="../images/Task5_billinear.png" alt="Task 4 code">
-        <img src="../images/Task5_nearst.png" alt="Task 4 code">
+        <img class="uniform-pictures" src="../images/Task5_billinear.png" alt="Task 4 code">
+        <img class="uniform-pictures" src="../images/Task5_nearst.png" alt="Task 4 code">
     </section>
-    <section id="progress-images">
+    <section id="task6">
         <div class="container">
-            <h2 class="section-title">Work in Progress</h2>
-            <div class="gallery">
-                <!-- Repeat this block for each image -->
-                <div class="img-wrap">
-                    <a href="./images/full-size-image1.jpg" target="_blank">
-                        <img src="./images/thumbnail-image1.jpg" alt="Description">
-                    </a>
-                    <p class="img-description">Description of the image</p>
-                </div>
-                <!-- Repeat ends -->
+            <h2 class="section-title">Task 6: "Level sampling" with mipmaps for texture mapping</h2>
+            <h3>Overview</h3>
+            <p> Level sampling is a technique used to handle how textures are displayed at different distances
+                and angles relative to the viewer, which related to Mipmapping and texture filtering.Problem with Direct
+                Texture Mapping: If I have a detailed texture (like a high-resolution image) applied to a surface
+                in a 3D scene. When this surface is far away or viewed at a steep angle, the texture's details can't be
+                correctly displayed on the screen due to limited screen resolution and pixel density. This mismatch
+                often causes visual artifacts like moiré patterns and aliasing. That's why I should use Mipmapping,
+                which involves creating multiple versions of the same texture at progressively lower resolutions.
+                I want to explain some tradeoffs between speed, memory usage, and antialiasing power between the various
+                techniques that we used in this task:
+            <ul class="abcd-list">
+                <li>
+                    Pixel Sampling: When I use pixel sampling, I'm essentially determining how many samples I'll take
+                    within
+                    each pixel to calculate its final color. Higher pixel sampling rates can significantly improve the
+                    quality of antialiasing, making edges in my rendered images smoother and more natural-looking.
+                    However,
+                    the tradeoff is speed and performance. More samples per pixel mean more calculations, which slows
+                    down
+                    the rendering process. Additionally, higher sampling rates can increase memory usage, though this is
+                    often less of a concern than the computational load.</li>
+                <li>
+                    Level Sampling: Level sampling, in my experience, is more about choosing the right level of texture
+                    detail for different parts of an image. This method is particularly useful in reducing artifacts
+                    like
+                    moiré patterns in textures that are far away or seen at steep angles. The key tradeoff here is
+                    between
+                    memory usage and antialiasing power. Storing multiple levels of a texture (mipmaps) consumes more
+                    memory, but it allows for better texture quality at various distances, which indirectly contributes
+                    to
+                    antialiasing. The impact on speed is generally positive since level sampling often avoids
+                    overburdening
+                    the renderer with unnecessarily high-resolution textures.</li>
+                <li>
+                    Number of Samples per Pixel: Adjusting the number of samples per pixel is a direct way to balance
+                    quality and performance. When I increase the number of samples, I see a noticeable improvement in
+                    antialiasing quality, as it reduces the aliasing artifacts. However, more samples per pixel directly
+                    correlate to slower rendering times because the system needs to process more data for each pixel. In
+                    terms of memory usage, the impact is relatively minor compared to the other two techniques, as it
+                    doesn't necessarily require storing more texture data, just processing the existing data more
+                    thoroughly.
+                </li>
+            </ul>
+            </p>
+            <p>
+                In task 6, I first moved the part of my previous logic that checks if it's linear or nearest into the
+                Texture::sample. Then, in the rasterize_textured_triangle, I make sure to scale up the difference
+                vectors accordingly by the width and height of the full-resolution texture image.
+            </p>
+            <pre><code>
+                    void RasterizerImp::rasterize_textured_triangle(float x0, float y0, float u0, float v0,
+                    float x1, float y1, float u1, float v1,
+                    float x2, float y2, float u2, float v2,
+                    Texture& tex)
+                    {
+                    // TODO: Task 5: Fill in the SampleParams struct and pass it to the tex.sample function.
+                    // Bilinear interpolation:
+                    BoundingBox bbox = calculateBoundingBox(x0, y0, x1, y1, x2, y2);
+                    for (float x = bbox.minX; x <= bbox.maxX; x++) { for (float y=bbox.minY; y <=bbox.maxY; y++) { // Calculate barycentric
+                        coordinates for the current pixel float alpha=((y1 - y2) * (x - x2) + (x2 - x1) * (y - y2)) / ((y1 - y2) * (x0 - x2)
+                        + (x2 - x1) * (y0 - y2)); float beta=((y2 - y0) * (x - x2) + (x0 - x2) * (y - y2)) / ((y1 - y2) * (x0 - x2) + (x2 -
+                        x1) * (y0 - y2)); float gamma=1.0f - alpha - beta; // Check if the pixel is inside the triangle if (alpha>= 0 &&
+                        beta >= 0 && gamma >= 0) {
+                        // Interpolate texture coordinates using barycentric coordinates
+                        float u = alpha * u0 + beta * u1 + gamma * u2;
+                        float v = alpha * v0 + beta * v1 + gamma * v2;
+                        // TODO: Task 6: Set the correct barycentric differentials in the SampleParams struct.
+                        // Hint: You can reuse code from rasterize_triangle/rasterize_interpolated_color_triangle
+                        // Approximate derivatives based on vertex differences
+                        float dudx = (u1 - u0) / (x1 - x0);
+                        float dvdx = (v1 - v0) / (x1 - x0);
+                        float dudy = (u2 - u0) / (y2 - y0);
+                        float dvdy = (v2 - v0) / (y2 - y0);
+                    
+                        SampleParams sp;
+                        sp.p_uv = Vector2D(u, v);
+                        sp.p_dx_uv = Vector2D(dudx, dvdx) * tex.mipmap[0].width;
+                        sp.p_dy_uv = Vector2D(dudy, dvdy) * tex.mipmap[0].height;
+                        sp.lsm = lsm;
+                        sp.psm = psm;
+                        //=====================
+                        Color color = tex.sample(sp);
+                        fill_pixel(x, y, color);
+                        }
+                        }
+                        }
+                        }
+                </code></pre>
+            <p>I implement get_level function accroding to slides:</p> <img src="../images/Task6_ppt.png"
+                alt="Task 6 classnote">
+            <pre><code>             
+
+                float Texture::get_level(const SampleParams& sp) {
+                    float dudx = sp.p_dx_uv.x;
+                    float dvdx = sp.p_dx_uv.y;
+                    float dudy = sp.p_dy_uv.x;
+                    float dvdy = sp.p_dy_uv.y;
+              
+                    float gradX = sqrt(dudx * dudx + dvdx * dvdx);
+                    float gradY = sqrt(dudy * dudy + dvdy * dvdy);
+              
+                    float maxGrad = std::max(gradX, gradY);
+                    float level = log2(maxGrad);//D = log2L
+                    if (level < 0) {
+                        level = 0;
+                    }
+                    return level;
+                }
+              
+</code></pre>
+            <p>
+                The purpose of this function is to calculate the appropriate Mipmap level, which is typically based on
+                the
+                rate of change of the texture coordinates. This involves estimating the derivatives of the texture
+                coordinates in screen space, which can be used to assess the degree of texture variation at a pixel,
+                thereby
+                selecting the appropriate Mipmap level. First, I calculate the derivatives of the texture coordinates in
+                the
+                x and y directions of screen space. Then, I calculate the magnitude of the gradients in these two
+                directions
+                and choose the larger of the two as my gradient. After that, I use the log2 function to calculate the
+                Mipmap
+                level. The log2 function used here is based on the magnitude of the gradient, which can represent the
+                rate
+                of texture change on the screen. Finally, I ensure that the returned level is not negative, as Mipmap
+                levels
+                cannot be negative.</p>
+
+            <p>In the texture::sample, different levels can be selected: L_ZERO = 0, L_NEAREST = 1, L_LINEAR =
+                2. And inside sp.lsm == L_LINEAR, I did a trilinear filtering. I interpolate between two adjacent Mipmap
+                levels to obtain the final texture color. Here is the comparison of my final results:</p>
+
+
+
+        </div>
+        <div class="image-task6">
+            <div class="image-container">
+                <img src="../images/Task6_b0.png" alt="Task 6 L_ZERO P_LINEAR">
+                <p>Task 6 L_ZERO P_LINEAR</p>
+            </div>
+            <div class="image-container">
+                <img src="../images/Task6_bn.png" alt="Task 6 L_NEAREST P_LINEAR">
+                <p>Task 6 L_NEAREST P_LINEAR</p>
+            </div>
+            <div class="image-container">
+                <img src="../images/Task6_bb.png" alt="Task 6 L_LINEAR P_LINEAR">
+                <p>Task 6 L_LINEAR P_LINEAR</p>
+            </div>
+            <div class="image-container">
+                <img src="../images/Task6_n0.png" alt="Task 6 L_ZERO P_NEAREST">
+                <p>Task 6 L_ZERO P_NEAREST</p>
+            </div>
+            <div class="image-container">
+                <img src="../images/Task6_nn.png" alt="Task 6 L_NEAREST P_NEAREST">
+                <p>Task 6 L_NEAREST P_NEAREST</p>
+            </div>
+            <div class="image-container">
+                <img src="../images/Task6_nb.png" alt="Task 6 L_LINEAR P_NEAREST">
+                <p>Task 6 L_LINEAR P_NEAREST</p>
             </div>
         </div>
+        
+        
     </section>
-
-
 
     <!-- Add more sections as needed -->
 

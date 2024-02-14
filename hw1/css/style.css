@@ -141,3 +141,23 @@ img {
     font-weight: bold;
     margin-right: 5px;
 }
+.image-task6 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.image-container {
+    width: 30%; /* Adjust as needed */
+    margin: 10px;
+    text-align: center; /* Centers the image and the text */
+}
+
+.image-container img {
+    width: 100%; /* Makes the image fill the container */
+    display: block; /* Ensures the image is on its own line */
+}
+
+.image-container p {
+    margin: 5px 0 20px; /* Adjust top and bottom margin as needed */
+}
