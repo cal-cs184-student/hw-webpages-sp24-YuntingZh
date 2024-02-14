@@ -154,7 +154,7 @@ img {
 }
 
 .image-container img {
-    width: 100%; /* Makes the image fill the container */
+    max-width: 100%;  /* Makes the image fill the container */
     display: block; /* Ensures the image is on its own line */
 }
 
