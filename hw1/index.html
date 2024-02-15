@@ -144,8 +144,8 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
         return a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1;<br>
     }
     </code>
-<p>I also encountered a small issue regarding the rounding, which was fixed by using floor and ceiling
-rounding methods</p>
+            <p>I also encountered a small issue regarding the rounding, which was fixed by using floor and ceiling
+                rounding methods</p>
             <img src="../images/Task1_checkRounding.png" alt="checkRounding">
             <div class="image-container">
                 <img class="uniform-pictures" src="../images/Task1_svg3notfilled.png" alt="Task 1 - issue">
@@ -159,16 +159,21 @@ rounding methods</p>
             <p class="img-description">Fixed - svg3notfilled</p>
             <!-- Add more paragraphs or images as needed -->
             <p>
-          
-                I am trying to improve function, and the first thing to do is precompute constants: Compute values that do
-                not change within the loop before entering it. By simply moving 'float denom = (y1 - y2) * (x0 - x2) + (x2 -
-                x1) * (y0 - y2);' out of my loop, I saved 300 microseconds(I called the timer functions in drawrend::redraw).
-                I'm thinking about how to not check every sample in the bounding box, but honestly, I haven't figured it out
+
+                I am trying to improve function, and the first thing to do is precompute constants: Compute values that
+                do
+                not change within the loop before entering it. By simply moving 'float denom = (y1 - y2) * (x0 - x2) +
+                (x2 -
+                x1) * (y0 - y2);' out of my loop, I saved 300 microseconds(I called the timer functions in
+                drawrend::redraw).
+                I'm thinking about how to not check every sample in the bounding box, but honestly, I haven't figured it
+                out
                 yet. I don't know if it's possible to perform Coarse Clipping again before starting to iterate over the
-                bounding box. I've seen suggestions to use hierarchical data structures such as Quadtree or Grid to organize
+                bounding box. I've seen suggestions to use hierarchical data structures such as Quadtree or Grid to
+                organize
                 space, which can quickly exclude areas not inside the triangle. Those methods seemed to be especially
-                effective when dealing with a large number of triangles. However, I haven't implemented it yet. 
-    
+                effective when dealing with a large number of triangles. However, I haven't implemented it yet.
+
             </p>
             <div class="image-container">
                 <img src="../images/Task1_ec_before.png" alt="Task 1">
@@ -183,7 +188,7 @@ rounding methods</p>
             <img class="uniform-pictures" src="../images/Task1_ec_timerfunctions.png" alt="Task 1 - test 3">
             <img class="uniform-pictures" src="../images/Task1_ec.png" alt="Task 1 - test 6">
         </div>
-        
+
     </section>
     <section id="task2">
         <div class="container">
@@ -316,7 +321,26 @@ rounding methods</p>
             <code>Matrix3x3(cos_theta, -sin_theta, 0,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin_theta,  cos_theta, 0,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0,          0,         1);</code>
-<img src="../images/Task3.png" alt="Task 4 code">
+            <img class="uniform-pictures" src="../images/Task3.png" alt="Task 3 after basic implementing">
+            <p> Now that I want to my robot to wave his hands. In my SVG, the last two <g> tags inside the main group
+                    represent the arms. Each arm group contains two subgroups, one for the upper arm and one for
+                    thelower arm.</p>
+            <p>
+                To adjust the lower arm so that it aligns correctly with the upper arm, I need to consider that
+                the initial rotation point and the point where the lower arm should be connected have both moved due
+                to the upper arm's rotation and translation</p>
+            <img src="../images/Task3_robotHandsUp.png" alt="Task 3 robot hands up">
+            <p>Let me explain how I did this. I set the upper arm's translate to （-90 -80）compared to the previous（90
+                -40）, which now moves the element 40 units in the negative y-direction (visually upwards), making it
+                higher. This is because when I initially rotated it 90 degrees, I noticed that the position of the upper
+                arm was slightly low, so I moved it up by 40 units. In the transforms.cpp, my rotate function defines a
+                2D rotation matrix that only takes an angle as a parameter, defaulting to rotate around the origin (0,
+                0). This matrix does not directly specify a center of rotation; it's a transformation matrix that
+                rotates around the coordinate origin. Through multiple trials and adjustments, I found that moving the
+                lower arm 70 units up along the y-axis looked better, so I used translate(0, -70). Similarly, I modified
+                the right arm, so the final effect is as follows. Specific data can be seen in my_robot.svg in my docs/
+                directory.</p>
+            <img  class="uniform-pictures" src="../images/Task3_final.png" alt="Task 3 robot hands up">
         </div>
     </section>
     <section id="task4">
@@ -590,35 +614,35 @@ rounding methods</p>
                 2. And inside sp.lsm == L_LINEAR, I did a trilinear filtering. I interpolate between two adjacent Mipmap
                 levels to obtain the final texture color. Here is the comparison of my final results:</p>
 
-                <div class="image-task6">
-                    <div class="image-container">
-                        <img src="../images/Task6_b0.png" alt="Task 6 L_ZERO P_LINEAR">
-                        <p>Task 6 L_ZERO P_LINEAR</p>
-                    </div>
-                    <div class="image-container">
-                        <img src="../images/Task6_bn.png" alt="Task 6 L_NEAREST P_LINEAR">
-                        <p>Task 6 L_NEAREST P_LINEAR</p>
-                    </div>
-                    <div class="image-container">
-                        <img src="../images/Task6_bb.png" alt="Task 6 L_LINEAR P_LINEAR">
-                        <p>Task 6 L_LINEAR P_LINEAR</p>
-                    </div>
-                    <div class="image-container">
-                        <img src="../images/Task6_n0.png" alt="Task 6 L_ZERO P_NEAREST">
-                        <p>Task 6 L_ZERO P_NEAREST</p>
-                    </div>
-                    <div class="image-container">
-                        <img src="../images/Task6_nn.png" alt="Task 6 L_NEAREST P_NEAREST">
-                        <p>Task 6 L_NEAREST P_NEAREST</p>
-                    </div>
-                    <div class="image-container">
-                        <img src="../images/Task6_nb.png" alt="Task 6 L_LINEAR P_NEAREST">
-                        <p>Task 6 L_LINEAR P_NEAREST</p>
-                    </div>
+            <div class="image-task6">
+                <div class="image-container">
+                    <img src="../images/Task6_b0.png" alt="Task 6 L_ZERO P_LINEAR">
+                    <p>Task 6 L_ZERO P_LINEAR</p>
                 </div>
+                <div class="image-container">
+                    <img src="../images/Task6_bn.png" alt="Task 6 L_NEAREST P_LINEAR">
+                    <p>Task 6 L_NEAREST P_LINEAR</p>
+                </div>
+                <div class="image-container">
+                    <img src="../images/Task6_bb.png" alt="Task 6 L_LINEAR P_LINEAR">
+                    <p>Task 6 L_LINEAR P_LINEAR</p>
+                </div>
+                <div class="image-container">
+                    <img src="../images/Task6_n0.png" alt="Task 6 L_ZERO P_NEAREST">
+                    <p>Task 6 L_ZERO P_NEAREST</p>
+                </div>
+                <div class="image-container">
+                    <img src="../images/Task6_nn.png" alt="Task 6 L_NEAREST P_NEAREST">
+                    <p>Task 6 L_NEAREST P_NEAREST</p>
+                </div>
+                <div class="image-container">
+                    <img src="../images/Task6_nb.png" alt="Task 6 L_LINEAR P_NEAREST">
+                    <p>Task 6 L_LINEAR P_NEAREST</p>
+                </div>
+            </div>
 
         </div>
-        
+
 
 
     </section>
