@@ -2,57 +2,198 @@
 <html>
 
 <head>
-    <title>Computer Graphics Homework Report</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Computer Graphics Homework 2 Report</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 
 <body>
     <header>
         <div class="container">
             <div id="branding">
-                <h1>Computer Graphics Homework 2 Repor</h1>
+                <h1>Computer Graphics Homework 2 Report</h1>
             </div>
             <nav>
+                <!-- Section I: Task 1, Task 2 -->
+                <h2>Section I</h2>
                 <ul>
-                    <li class="current"><a href="#overview">Overview</a></li>
                     <li><a href="#task1">Task 1</a></li>
                     <li><a href="#task2">Task 2</a></li>
+                </ul>
+
+                <!-- Section II: Task 3, Task 4, Task 5, Task 6 -->
+                <h2>Section II</h2>
+                <ul>
                     <li><a href="#task3">Task 3</a></li>
                     <li><a href="#task4">Task 4</a></li>
                     <li><a href="#task5">Task 5</a></li>
                     <li><a href="#task6">Task 6</a></li>
+                </ul>
+
+                <!-- Extra Credit -->
+                <ul>
                     <li><a href="#extra">Extra Credit</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
+
     <section id="overview">
         <div class="container">
             <h2 class="section-title">Overview</h2>
             <p>
-                Here's the website link: 
-				TBD
-                   
+                Here's the website link:
+                TBD
+
             </p>
 
         </div>
     </section>
 
-    <!-- Add sections for each task here -->
+    <!-- Section I : Task1 -->
     <section id="task1">
         <div class="container">
             <h2 class="section-title">Task 1:...</h2>
             <h3>Overview</h3>
             <p>
-               ...
+                ...
             <p>
-            
-            </p>
-   
+        </div>
+    </section>
+
+    <!-- Section II : Task3 -->
+
+    <div class="container">
+        <h2 style="text-align: center;">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+        <h3 style="text-align: center;">Overview</h3>
+        <h4>TODO:</h4>
+        <ul>
+            <li>Read this introduction to the half-edge data structure to reinforce your understanding
+                of it from Lecture 8.</li>
+            <li>Read through this primer on how to navigate meshes using the HalfedgeMesh class.</li>
+            <li>Read and understand the documentation at the beginning of halfedgeMesh.h, which provides
+                supplementary information to the primer.</li>
+        </ul>
+        <h4>Why Bezier surfaces are much more difficult to render directly? </h4>
+
+        <p>The advantage of Bezier surfaces is that they can create very smooth surfaces. They do not
+            require much storage space, as only the information of those control points is needed.
+            However, displaying Bezier surfaces directly on the screen is challenging because of their
+            smoothness, which requires more complex calculations for accurate depiction. Therefore,
+            typically, Bezier surfaces are converted into triangle meshes before being displayed on the
+            screen. This allows us to see a very smooth surface of a 3D model on the screen. The storage
+            method for triangle meshes needs two lists: one for vertices and one for triangles. Although
+            this method is straightforward, it is limited when it comes to traversing a large number of
+            triangles for complex geometric processing. For example, if I want to find all the triangles
+            around a specific triangle, I need to check every triangle in the framework, which can be
+            slow and complicated if there are many triangles.<span style="font-style: italic;">😫</span></p>
 
 
+        <p>Therefore, at this point, our lecture introduced the half-edge data structure, a more
+            efficient way to
+            handle triangle meshes. It provides quick access and more effective mesh processing. The
+            characteristic of the half-edge data structure is that each triangle is not only composed of
+            points (vertices) and edges, but also an additional element called "half-edge." This
+            "half-edge" acts like a small bridge connecting the points and edges in a triangle, storing
+            all the necessary connection information. For instance, if I now want to find all the
+            triangles adjacent to a triangle, it's like having a map that not only marks all the scenic
+            spots (points) but also shows how to get from one scenic spot to another (edges and faces).
+        </p>
+    </div>
+    <section id="task3">
+        <div class="container">
+            <h2 class="section-title">Task 3 - Area-Weighted Vertex Normals</h2>
 
+            <p>In class, when we covered this topic, I personally understood it through the "Shade Smooth"
+                function in Blender.</p>
+            <p>In Blender, there are two shading methods provided: shade flat and shade smooth. I think the
+                so-called area-weighted vertex normals are similar to Blender's "Shade Smooth" function in
+                that both are based on a similar concept. They are used to achieve a smoother, more natural
+                surface
+                effect when rendering models.</p>
+            <img class="uniform-pictures" src="../hw2_IMGs/Task3_2waysOfShading.png" alt="Task 3 blender exaple">
+
+            <h2>About My Implementation:</h2>
+            <p>The essence of area-weighted vertex normals lies in converting the normals of a face into the
+                normals
+                of a vertex. A vertex may be connected to many faces, so my goal is to find a comprehensive
+                average
+                direction that represents all these faces.</p>
+
+            <ol>
+                <li><strong>Calculate Each Face's Normal:</strong> Start by calculating the normal of each
+                    face. For
+                    a given vertex, find each adjacent triangle. The normal is equal to the cross product of
+                    two
+                    vectors of the triangle. Specifically, I used a loop
+                    <code>do {...} while (h != halfedge());</code> to traverse all the adjacent half-edges
+                    of a
+                    vertex. This ensures all the faces adjacent to that vertex are covered, and I checked if
+                    the
+                    face is a boundary face with <code>if (!h->face()->isBoundary()) {...}</code> since
+                    boundary
+                    faces may not be applicable for normal face normal calculations. Then I used
+                    <code>Vector3D faceNormal = cross(edge1, edge2);</code> to calculate the face's normal.
+                </li>
+                <li><strong>Weight the Normals by Area:</strong> This ensures that larger faces have a
+                    greater
+                    impact on the vertex normal. I calculated the area with
+                    <code>double area = faceNormal.norm() / 2.0;</code>, allowing for a weighted
+                    calculation.
+                </li>
+                <li><strong>Summation:</strong> Sum up all the normals around the vertex to get an overall
+                    normal
+                    vector. The implementation is <code>N += faceNormal.unit() * area;</code>. Here I used
+                    <code>faceNormal.unit()</code> because the length of the unnormalized faceNormal is
+                    twice the
+                    area. Multiplying it by the area would square the area, resulting in a physically
+                    meaningless
+                    result.
+                </li>
+                <li><strong>Normalize the Overall Normal Vector:</strong> Scale the vector to unit length
+                    (i.e.,
+                    length of 1). <code>return N.unit();</code> The normalized normal vector maintains its
+                    original
+                    direction but with a uniform length. This is important for lighting and rendering, as it
+                    ensures
+                    that all normal vectors contribute evenly to the calculation.</li>
+            </ol>
+            <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
+            <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
+            <!-- <div class="card"> -->
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h4>Understanding the Impact of Not Normalizing:</h4>
+                <p>If the normal vectors are not uniform in length, i.e., not normalized, several issues can
+                    arise
+                    during lighting calculations and rendering:</p>
+                <ul>
+                    <li><strong>Inconsistent Lighting Calculations:</strong> In 3D rendering, normal vectors are
+                        typically used for calculating lighting, especially in determining how surfaces reflect
+                        light.
+                        If the normal vectors are not uniform in length, lighting intensity calculations can be
+                        incorrect. In lighting models like the Phong model, the length of normals affects the
+                        intensity
+                        of reflected light. Longer normals can make some areas appear brighter or darker than
+                        they
+                        actually are.</li>
+                    <li><strong>Visual Inconsistency:</strong> Non-uniform normal vectors can lead to visually
+                        incoherent images. Some areas might appear abnormal, like unexpected bright spots or
+                        dark areas,
+                        which do not correspond to the object's actual material and lighting conditions.</li>
+                    <li><strong>Performance Impact:</strong> Normalizing normal vectors is usually a standard
+                        step in
+                        the rendering pipeline. If the normals are not normalized, additional calculations may
+                        need to
+                        be performed during the lighting processing stage, which can affect rendering
+                        performance.</li>
+                    <li><strong>Cumulative Calculation Errors:</strong> In complex rendering scenes,
+                        unnormalized
+                        normals can lead to the accumulation of calculation errors, especially during multiple
+                        rendering
+                        iterations or when dealing with complex lighting effects.</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
     <!-- Add more sections as needed -->
