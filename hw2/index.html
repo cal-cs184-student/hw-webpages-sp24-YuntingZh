@@ -111,7 +111,7 @@
                 that both are based on a similar concept. They are used to achieve a smoother, more natural
                 surface
                 effect when rendering models.</p>
-            <img class="uniform-pictures" src="../hw2_IMGs/Task3_2waysOfShading.png" alt="Task 3 blender exaple">
+            <img src="../hw2_IMGs/Task3_2waysOfShading.png" alt="Task 3 blender exaple">
 
             <h2>About My Implementation:</h2>
             <p>The essence of area-weighted vertex normals lies in converting the normals of a face into the
@@ -161,7 +161,7 @@
             <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
             <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
             <div class="card">
-            
+
                 <h4>Understanding the Impact of Not Normalizing:</h4>
                 <p>If the normal vectors are not uniform in length, i.e., not normalized, several issues can
                     arise
@@ -196,7 +196,46 @@
         </div>
     </section>
 
-    <!-- Add more sections as needed -->
+    <!-- Section II : Task4 -->
+    <section id="task4">
+        <div class="container">
+            <h2 class="section-title">Task 4: Edge Flip</h2>
+
+            <p>When performing operations like edge flipping, it's essentially about rearranging the connections of
+                these elements. To maintain the integrity and functionality of the mesh, I need to ensure:</p>
+            <ul>
+                <li>Each half-edge correctly points to its corresponding next half-edge, twin half-edge, the vertex it
+                    belongs to, as well as its edge and face.</li>
+                <li>Each vertex, edge, and face correctly point to one of the half-edges associated with them.</li>
+            </ul>
+            <p>This process, in my understanding, is like moving some pieces in a puzzle, where I need to ensure that
+                all the puzzle pieces are still correctly fitted together. In this process, each puzzle piece (mesh
+                element) needs to be correctly connected to others to maintain the integrity of the entire pattern
+                (mesh). If these pointers point to the wrong elements, the mesh might experience issues, such as
+                breaking or distortion (which I encountered during implementation).</p>
+
+            <h2>How to Implement Edge Flip</h2>
+            <ol>
+                <li><strong>Confirm Flip Conditions:</strong> <code>if (e0-&gt;isBoundary()) { return e0; }</code>
+                    Ensure that the selected edge is not a boundary edge. If the edge or its adjacent faces are boundary
+                    elements, do not perform the flip.</li>
+                <li><strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
+                    flipped: four vertices, six half-edges, two faces.
+                    <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code></li>
+                    <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
+                <li><strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
+                    the pointers of the half-edges to reflect the new connections.
+                    <code>h0-&gt;setNeighbors(...), h1-&gt;setNeighbors(...), ...</code> Ensure that each half-edge's
+                    next, twin, vertex, edge, and face pointers are correctly directed towards the appropriate elements.
+                    And in this step I encountered the following errors:</li>
+                    <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
+                    <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
+                <li>TODO:how to Fix</li>
+                <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
+                </ol>
+        
+        </div>
+    </section>
 
     <footer>
         <div class="container">
