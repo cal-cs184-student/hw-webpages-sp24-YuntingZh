@@ -221,19 +221,25 @@
                     elements, do not perform the flip.</li>
                 <li><strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
                     flipped: four vertices, six half-edges, two faces.
-                    <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code></li>
-                    <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
+                    <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code>
+                </li>
+                <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
                 <li><strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
                     the pointers of the half-edges to reflect the new connections.
                     <code>h0-&gt;setNeighbors(...), h1-&gt;setNeighbors(...), ...</code> Ensure that each half-edge's
                     next, twin, vertex, edge, and face pointers are correctly directed towards the appropriate elements.
-                    And in this step I encountered the following errors:</li>
-                    <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
-                    <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
-                <li>TODO:how to Fix</li>
+                    And in this step I encountered the following errors:
+                </li>
+                <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
+                <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
+                <li>My Fix: This is a correction made by ChatGPT. I attempted to comprehend it, but it didn't seem to
+                    make sense. Regardless, I also revised my own code. After attending the office hours on Tuesday, I
+                    realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
+                    the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface, it functions well.<span style="font-style: italic;">😁</span></li>
                 <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
-                </ol>
-        
+
+            </ol>
+
         </div>
     </section>
 
