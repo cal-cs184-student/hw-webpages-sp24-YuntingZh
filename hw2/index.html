@@ -364,46 +364,108 @@
             breaking or distortion (which I encountered during implementation).
         </p>
 
-        <h2>How to Implement Edge Flip</h2>
-        <ol>
-            <li>
-                <strong>Confirm Flip Conditions:</strong> <code>if (e0-&gt;isBoundary()) { return e0; }</code>
-                Ensure that the selected edge is not a boundary edge. If the edge or its adjacent faces are boundary
-                elements, do not perform the flip.
-            </li>
-            <li>
-                <strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
-                flipped: four vertices, six half-edges, two faces.
-                <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code>
-            </li>
-            <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
-            <li>
-                <strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
-                the pointers of the half-edges to reflect the new connections.
-                <code>h0-&gt;setNeighbors(...), h1-&gt;setNeighbors(...), ...</code> Ensure that each half-edge's
-                next, twin, vertex, edge, and face pointers are correctly directed towards the appropriate elements.
-                And in this step I encountered the following errors:
-            </li>
-            <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
-            <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
-            <li>
-                My Fix: This is a correction made by ChatGPT. I attempted to comprehend it, but it didn't seem to
-                make sense. Regardless, I also revised my own code. After attending the office hours on Tuesday, I
-                realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
-                the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface, it functions well.<span style="font-style: italic;">😁</span>
-            </li>
-            <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
+            <h2>How to Implement Edge Flip</h2>
+            <ol>
+                <li><strong>Confirm Flip Conditions:</strong> <code>if (e0-&gt;isBoundary()) { return e0; }</code>
+                    Ensure that the selected edge is not a boundary edge. If the edge or its adjacent faces are boundary
+                    elements, do not perform the flip.</li>
+                <li><strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
+                    flipped: four vertices, six half-edges, two faces.
+                    <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code>
+                </li>
+                <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
+                <li><strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
+                    the pointers of the half-edges to reflect the new connections.
+                    <code>h0-&gt;setNeighbors(...), h1-&gt;setNeighbors(...), ...</code> Ensure that each half-edge's
+                    next, twin, vertex, edge, and face pointers are correctly directed towards the appropriate elements.
+                    And in this step I encountered the following errors:
+                </li>
+                <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
+                <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
+                <li>My Fix: This is a correction made by ChatGPT. I attempted to comprehend it, but it didn't seem to
+                    make sense. Regardless, I also revised my own code. After attending the office hours on Tuesday, I
+                    realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
+                    the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface,
+                    it functions well.<span style="font-style: italic;">😁</span></li>
+                <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
 
-        </ol>
+            </ol>
 
-    </div>
-</section>
+        </div>
+    </section>
+    <!-- Section II : Task5 -->
+    <section id="task5">
+        <div class="container">
+            <h2 class="section-title">Task 5: Face Splitting</h2>
 
-<footer>
-    <div class="container">
-        <p>Computer Graphics Class, 2024</p>
-    </div>
-</footer>
+            <p>Splitting a boundary edge indeed makes sense, but flipping a boundary edge does not. (Can you explain why
+                this is the case?) </p>
+            <div class="card">
+                <h4>Edge Operations on Meshes: Splitting vs. Flipping Boundary Edges</h4>
+                <p>Understanding the difference between splitting and flipping boundary edges in mesh processing is
+                    crucial for maintaining the integrity and structure of the mesh:</p>
+                <ul>
+                    <li><strong>Validity of Splitting a Boundary Edge:</strong> Splitting a boundary edge involves
+                        adding a new vertex along the edge, effectively dividing it into two. This operation is valid
+                        for boundary edges as it extends the mesh by adding more detail, without altering the
+                        fundamental shape or the integrity of the mesh.</li>
+                    <li><strong>Impracticality of Flipping a Boundary Edge:</strong> Flipping an edge is a process of
+                        reassigning connections between vertices, typically applicable to internal edges. For boundary
+                        edges, flipping is not feasible as they are part of only one triangle and lack the quadrilateral
+                        structure needed for flipping. Attempting to flip a boundary edge could distort or break the
+                        mesh's intended structure, as it would either create non-manifold edges or disrupt the mesh's
+                        boundary.</li>
+                    <li><strong>Preservation of Mesh Structure:</strong> In mesh processing, operations should preserve
+                        the mesh's overall structure and integrity. Splitting boundary edges aligns with this principle
+                        by adding detail without changing the mesh's shape, while flipping boundary edges does not and
+                        can lead to structural inconsistencies.</li>
+                </ul>
+            </div>
+
+            <p>Task 5 requires me to perform a Edge Split. In the process of splitting, new vertices, edges, and faces
+                are created. My focus is on reassigning pointers to ensure that the new relationships are still correct
+                after the split. This step sounds simple, but I found that during implementation, due to not checking
+                carefully, I sometimes reassigned the next edge or vertex incorrectly, which often led to errors. For
+                example, I forgot to update the edge's pointer to the halfedge...</p>
+            <img src="../hw2_IMGs/Task5_SomeErrors.png" alt="Errors">
+
+            <h2>Implementation Steps</h2>
+            <ol>
+                <li><strong>Boundary Edge Check:</strong> First, check if the edge is a boundary edge. If so:
+                    <code>return VertexIter()</code>; And for the extra credit part I will explain later.
+                </li>
+                <li><strong>Create New Vertex:</strong> Create a new vertex at the midpoint of the edge to be split.
+                    This involves getting the two vertices at the ends of the e0 and computing the midpoint:
+                    <code>Vector3D midpoint = (pos0 + pos1) / 2.0;</code>
+                </li>
+                <li><strong>Update Mesh Connectivity:</strong> With the new vertex added, it's necessary to create 3 new
+                    edges, 6 new half edges, and 2 new faces accordingly.</li>
+                <img src="../hw2_IMGs/Task5_graphics.png" alt="Task5_graphics">
+                <li><strong>Update Pointers:</strong> Ensure all halfedges, vertices, and edges are updated to point to
+                    the correct elements after the split.</li>
+                <li><strong>Testing Flip:</strong> Before and After Face Splitting.<img
+                        src="../hw2_IMGs/Task5_BeforeAfterSplit.png" alt="Before and After Face Splitting">Here are
+                    screenshots showing the mesh before and
+                    after combining edge splitting and flipping.<img src="../hw2_IMGs/Task5_CombineSplitFlip.png"
+                        alt="Combining Edge Split and Flip"></li>
+
+                <li><strong>Combining Edge Split and Flip:</strong> Here are screenshots showing the mesh before and
+                    after combining edge splitting and flipping.</li>
+                <img src="../hw2_IMGs/Task5_CombineSplitFlip.png" alt="Combining Edge Split and Flip">
+            </ol>
+
+            <h2>Extra Credit - Split Boundary Edges</h2>
+            <p>TBU</p>
+
+        </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <p>Computer Graphics Class, 2024</p>
+        </div>
+    </footer>
 </body>
 
 </html>
