@@ -90,42 +90,7 @@
                 To apply the Castlejau’s method, inside a loop, we calculate the interpolated point between each pair of consecutive points using the formula (1 - t) * currentPoint + t * nextPoint. This generates the points for the next level of the algorithm. We continue this process recursively by calling evaluateStep on the new set of points until we're left with one final point. This point is the position on the Bezier curve corresponding to the parameter t.
             </p>
             <h2>The Bezier Curves</h2>
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Image Gallery</title>
-                <style>
-                    .gallery-container {
-                        text-align: center;
-                    }
-
-                    .gallery-row {
-                        display: flex;
-                        justify-content: center;
-                    }
-
-                    .gallery-item {
-                        margin: 5px;
-                    }
-
-                    img {
-                        width: 100%; /* Adjust the size to your preference */
-                        max-width: 300px; /* Maximum width */
-                        height: auto; /* Maintain aspect ratio */
-                        display: block; /* Correct block display */
-                        margin: 0 auto 10px; /* Centering and spacing for image */
-                    }
-
-                    .gallery-caption {
-                        text-align: center;
-                        margin-bottom: 20px; /* Spacing below caption */
-                    }
-                </style>
-            </head>
-            <body>
+   
 
                 <div class="gallery-container">
                     <div class="gallery-item">
@@ -154,8 +119,6 @@
                             <div class="gallery-caption">Curve3 - Step4</div>
                         </div>
                     </div>
-
-                    <
 
                     <div class="gallery-item">
                         <img src="../hw2_IMGs/Task1_curve3_step5.png" alt="Step 5">
