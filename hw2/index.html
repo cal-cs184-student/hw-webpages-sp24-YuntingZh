@@ -82,7 +82,7 @@
                     controlPoints: A std::vector and float t.
                     <div style="text-align:center;">
                         <img src="../hw2_IMGs/Task1_headerfile.png" alt="Task 3 before"
-                            style="width:50%; margin:auto;">
+                             style="width:50%; margin:auto;">
                     </div>
 
             </p>
@@ -114,24 +114,24 @@
                     <div class="gallery-caption">Curve3 - 6 Points</div>
                 </div>
 
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_step1.png" alt="Step 1">
-                        <div class="gallery-caption">Curve3 - Step 1</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_step2.png" alt="Step 2">
-                        <div class="gallery-caption">Curve3 - Step2</div>
-                    </div>
-            
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_step1.png" alt="Step 1">
+                    <div class="gallery-caption">Curve3 - Step 1</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_step2.png" alt="Step 2">
+                    <div class="gallery-caption">Curve3 - Step2</div>
+                </div>
 
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_step3.png" alt="Step 3">
-                        <div class="gallery-caption">Curve3 - Step3</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_step4.png" alt="Step 4">
-                        <div class="gallery-caption">Curve3 - Step4</div>
-                    </div>
+
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_step3.png" alt="Step 3">
+                    <div class="gallery-caption">Curve3 - Step3</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_step4.png" alt="Step 4">
+                    <div class="gallery-caption">Curve3 - Step4</div>
+                </div>
 
                 <div class="gallery-item">
                     <img src="../hw2_IMGs/Task1_curve3_step5.png" alt="Step 5">
@@ -148,6 +148,35 @@
                     <img src="../hw2_IMGs/Task1_curve3_movingpoints.png" alt="Moving Points">
                     <div class="gallery-caption">Curve3 - Moving Control Points</div>
                 </div>
+            </div>
+
+            <h2 class="section-title">Task 2:Bezier Surfaces with Separable 1D de Castlejau.</h2>
+            <p>
+                The de Casteljau algorithm is also utilized for evaluating Bezier curves. For Bezier surfaces, this algorithm is extended to two parameters, commonly represented as u and v. While a Bezier curve is defined by a single set of control points, a Bezier surface is defined by a grid of control points. The extension to surfaces is applied as a separable 1D de Castlejau algorithm twice separately. First, applying the algorithm in one parameter direction (u) across all rows or columns of control points produces a set of new control points that define a Bezier curve in the other parameter direction (v). Then, the algorithm will recursively reduce the number of control points by linearly interpolating between those two parameters until a single point remains. Finally, this single point is the resulting point on the Bezier surface for the given parameters u and v.
+            </p>
+
+            <p>
+                In the case of integrating the algorithm, we must work with these three functions step by step. First is the BezierPath::evaluateStep(…) function, which is responsible for performing one step of the de Castlejau algorithm to reduce the grid of control points. This function will be modified just like the step we did for the Bezier curve and only needs to change from Vector2D to Vector3D.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code1.png" alt="Task 3 before" style="width:40%; margin:auto;">
+            </div>
+
+            <p>
+                Then, secondly, continue to the BezierPatch::evaluate1D(…) function, which will be responsible for iterating until a single point is obtained for each direction.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code2.png" alt="Task 3 before" style="width:40%; margin:auto;">
+            </div>
+
+            <p>
+                Finally, the last step is to apply BezierPatch::evaluate(…) to combine all these steps to find the final point on the surface.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code3.png" alt="Task 3 before" style="width:40%; margin:auto;">
             </div>
 
         </div>
