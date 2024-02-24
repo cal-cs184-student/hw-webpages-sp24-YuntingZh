@@ -68,26 +68,42 @@
             <h2 class="section-title">Task 1:Bezier Curves with 1D de Castlejau Subdivison.</h2>
 
             <p>
-                This hahaha part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a numerical method that recursively subdivides the curve at each iteration step, moving from the initial control points to the evaluation point on the curve. The Bezier curve is made from a series of control points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control point, and when t = 1, the point on the curve is the last control point.
+                This hahaha part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes
+                of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a
+                numerical method that recursively subdivides the curve at each iteration step, moving from the initial
+                control points to the evaluation point on the curve. The Bezier curve is made from a series of control
+                points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a
+                parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control
+                point, and when t = 1, the point on the curve is the last control point.
             <p>
             <p>
-                In order to implement Castlejau’s algorithm on this first task 1, we need to pay attention to the header file that stores std::vector<Vector2D>
+                In order to implement Castlejau’s algorithm on this first task 1, we need to pay attention to the header
+                file that stores std::vector<Vector2D>
                     controlPoints: A std::vector and float t.
                     <div style="text-align:center;">
-                        <img src="../hw2_IMGs/Task1_headerfile.png" alt="Task 3 before" style="width:200%; margin:auto;">
+                        <img src="../hw2_IMGs/Task1_headerfile.png" alt="Task 3 before"
+                            style="width:50%; margin:auto;">
                     </div>
 
             </p>
             <p>
-                We defined a function evaluateStep, creating a new vector to store the interpolated points. Going back to the definition again, the Bezier curve is a curve that can be manipulated by using a series of control points. Its degree of n is defined by n+1 control points and based on parameter t with a value starting from 0 – 1 (start to end point of curve). This specific loop iterates through each pair of consecutive control points to generate a new set of control points.
+                We defined a function evaluateStep, creating a new vector to store the interpolated points. Going back
+                to the definition again, the Bezier curve is a curve that can be manipulated by using a series of
+                control points. Its degree of n is defined by n+1 control points and based on parameter t with a value
+                starting from 0 – 1 (start to end point of curve). This specific loop iterates through each pair of
+                consecutive control points to generate a new set of control points.
             </p>
 
             <div style="text-align:center;">
-                <img src="../hw2_IMGs/Task1_student_code.png" alt="Task 3 before" style="width:300%; margin:auto;">
+                <img src="../hw2_IMGs/Task1_student_code.png" alt="Task 3 before" style="width:50%; margin:auto;">
             </div>
 
             <p>
-                To apply the Castlejau’s method, inside a loop, we calculate the interpolated point between each pair of consecutive points using the formula (1 - t) * currentPoint + t * nextPoint. This generates the points for the next level of the algorithm. We continue this process recursively by calling evaluateStep on the new set of points until we're left with one final point. This point is the position on the Bezier curve corresponding to the parameter t.
+                To apply the Castlejau’s method, inside a loop, we calculate the interpolated point between each pair of
+                consecutive points using the formula (1 - t) * currentPoint + t * nextPoint. This generates the points
+                for the next level of the algorithm. We continue this process recursively by calling evaluateStep on the
+                new set of points until we're left with one final point. This point is the position on the Bezier curve
+                corresponding to the parameter t.
             </p>
             <h2>The Bezier Curves</h2>
 
@@ -98,7 +114,6 @@
                     <div class="gallery-caption">Curve3 - 6 Points</div>
                 </div>
 
-                <div class="gallery-row">
                     <div class="gallery-item">
                         <img src="../hw2_IMGs/Task1_curve3_step1.png" alt="Step 1">
                         <div class="gallery-caption">Curve3 - Step 1</div>
@@ -107,9 +122,8 @@
                         <img src="../hw2_IMGs/Task1_curve3_step2.png" alt="Step 2">
                         <div class="gallery-caption">Curve3 - Step2</div>
                     </div>
-                </div>
+            
 
-                <div class="gallery-row">
                     <div class="gallery-item">
                         <img src="../hw2_IMGs/Task1_curve3_step3.png" alt="Step 3">
                         <div class="gallery-caption">Curve3 - Step3</div>
@@ -118,7 +132,6 @@
                         <img src="../hw2_IMGs/Task1_curve3_step4.png" alt="Step 4">
                         <div class="gallery-caption">Curve3 - Step4</div>
                     </div>
-                </div>
 
                 <div class="gallery-item">
                     <img src="../hw2_IMGs/Task1_curve3_step5.png" alt="Step 5">
@@ -137,41 +150,8 @@
                 </div>
             </div>
 
-            <h2 class="section-title">Task 2:Bezier Surfaces with Separable 1D de Castlejau.</h2>
-            <p>
-                The de Casteljau algorithm is also utilized for evaluating Bezier curves. For Bezier surfaces, this algorithm is extended to two parameters, commonly represented as u and v. While a Bezier curve is defined by a single set of control points, a Bezier surface is defined by a grid of control points. The extension to surfaces is applied as a separable 1D de Castlejau algorithm twice separately. First, applying the algorithm in one parameter direction (u) across all rows or columns of control points produces a set of new control points that define a Bezier curve in the other parameter direction (v). Then, the algorithm will recursively reduce the number of control points by linearly interpolating between those two parameters until a single point remains. Finally, this single point is the resulting point on the Bezier surface for the given parameters u and v.
-            </p>
-
-            <p>
-                In the case of integrating the algorithm, we must work with these three functions step by step. First is the BezierPath::evaluateStep(…) function, which is responsible for performing one step of the de Castlejau algorithm to reduce the grid of control points. This function will be modified just like the step we did for the Bezier curve and only needs to change from Vector2D to Vector3D.
-            </p>
-
-            <div style="text-align:center;">
-                <img src="../hw2_IMGs/Task2_code1.png" alt="Task 3 before" style="width:40%; margin:auto;">
-            </div>
-
-            <p>
-                Then, secondly, continue to the BezierPatch::evaluate1D(…) function, which will be responsible for iterating until a single point is obtained for each direction.
-            </p>
-
-            <div style="text-align:center;">
-                <img src="../hw2_IMGs/Task2_code2.png" alt="Task 3 before" style="width:40%; margin:auto;">
-            </div>
-
-            <p>
-                Finally, the last step is to apply BezierPatch::evaluate(…) to combine all these steps to find the final point on the surface.
-            </p>
-
-            <div style="text-align:center;">
-                <img src="../hw2_IMGs/Task2_code3.png" alt="Task 3 before" style="width:40%; margin:auto;">
-            </div>
-
-
-
         </div>
     </section>
-
-
 
     <!-- Section II : Task3 -->
 
@@ -467,7 +447,7 @@
                     <strong>Testing Flip:</strong> Before and After Face Splitting.<img src="../hw2_IMGs/Task5_BeforeAfterSplit.png" alt="Before and After Face Splitting">Here are
                     screenshots showing the mesh before and
                     after combining edge splitting and flipping.<img src="../hw2_IMGs/Task5_CombineSplitFlip.png"
-                                                                     alt="Combining Edge Split and Flip">
+                        alt="Combining Edge Split and Flip">
                 </li>
             </ol>
 
