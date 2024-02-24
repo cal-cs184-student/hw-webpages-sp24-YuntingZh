@@ -68,7 +68,7 @@
             <h2 class="section-title">Task 1:Bezier Curves with 1D de Castlejau Subdivison.</h2>
 
             <p>
-                This hahaha part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a numerical method that recursively subdivides the curve at each iteration step, moving from the initial control points to the evaluation point on the curve. The Bezier curve is made from a series of control points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control point, and when t = 1, the point on the curve is the last control point. 
+                This hahaha part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a numerical method that recursively subdivides the curve at each iteration step, moving from the initial control points to the evaluation point on the curve. The Bezier curve is made from a series of control points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control point, and when t = 1, the point on the curve is the last control point.
             <p>
             <p>
                 In order to implement Castlejau’s algorithm on this first task 1, we need to pay attention to the header file that stores std::vector<Vector2D>
@@ -90,254 +90,291 @@
                 To apply the Castlejau’s method, inside a loop, we calculate the interpolated point between each pair of consecutive points using the formula (1 - t) * currentPoint + t * nextPoint. This generates the points for the next level of the algorithm. We continue this process recursively by calling evaluateStep on the new set of points until we're left with one final point. This point is the position on the Bezier curve corresponding to the parameter t.
             </p>
             <h2>The Bezier Curves</h2>
-   
 
-                <div class="gallery-container">
+
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_6points.png" alt="Curve with 6 Points">
+                    <div class="gallery-caption">Curve3 - 6 Points</div>
+                </div>
+
+                <div class="gallery-row">
                     <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_6points.png" alt="Curve with 6 Points">
-                        <div class="gallery-caption">Curve3 - 6 Points</div>
+                        <img src="../hw2_IMGs/Task1_curve3_step1.png" alt="Step 1">
+                        <div class="gallery-caption">Curve3 - Step 1</div>
                     </div>
-
-                    <div class="gallery-row">
-                        <div class="gallery-item">
-                            <img src="../hw2_IMGs/Task1_curve3_step1.png" alt="Step 1">
-                            <div class="gallery-caption">Curve3 - Step 1</div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="../hw2_IMGs/Task1_curve3_step2.png" alt="Step 2">
-                            <div class="gallery-caption">Curve3 - Step2</div>
-                        </div>
-                    </div>
-
-                    <div class="gallery-row">
-                        <div class="gallery-item">
-                            <img src="../hw2_IMGs/Task1_curve3_step3.png" alt="Step 3">
-                            <div class="gallery-caption">Curve3 - Step3</div>
-                        </div>
-                        <div class="gallery-item">
-                            <img src="../hw2_IMGs/Task1_curve3_step4.png" alt="Step 4">
-                            <div class="gallery-caption">Curve3 - Step4</div>
-                        </div>
-                    </div>
-
                     <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_step5.png" alt="Step 5">
-                        <div class="gallery-caption">Curve3 - Step 5</div>
-                    </div>
-
-
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_completed.png" alt="Completed Curve">
-                        <div class="gallery-caption">Curve3 - Completed</div>
-                    </div>
-
-                    <div class="gallery-item">
-                        <img src="../hw2_IMGs/Task1_curve3_movingpoints.png" alt="Moving Points">
-                        <div class="gallery-caption">Curve3 - Moving Control Points</div>
+                        <img src="../hw2_IMGs/Task1_curve3_step2.png" alt="Step 2">
+                        <div class="gallery-caption">Curve3 - Step2</div>
                     </div>
                 </div>
 
-    </div>
-</section>
+                <div class="gallery-row">
+                    <div class="gallery-item">
+                        <img src="../hw2_IMGs/Task1_curve3_step3.png" alt="Step 3">
+                        <div class="gallery-caption">Curve3 - Step3</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../hw2_IMGs/Task1_curve3_step4.png" alt="Step 4">
+                        <div class="gallery-caption">Curve3 - Step4</div>
+                    </div>
+                </div>
 
-<!-- Section II : Task3 -->
-
-<div class="container">
-    <h2 style="text-align: center;">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
-    <h3 style="text-align: center;">Overview</h3>
-    <h4>TODO:</h4>
-    <ul>
-        <li>
-            Read this introduction to the half-edge data structure to reinforce your understanding
-            of it from Lecture 8.
-        </li>
-        <li>Read through this primer on how to navigate meshes using the HalfedgeMesh class.</li>
-        <li>
-            Read and understand the documentation at the beginning of halfedgeMesh.h, which provides
-            supplementary information to the primer.
-        </li>
-    </ul>
-    <h4>Why Bezier surfaces are much more difficult to render directly? </h4>
-
-    <p>
-        The advantage of Bezier surfaces is that they can create very smooth surfaces. They do not
-        require much storage space, as only the information of those control points is needed.
-        However, displaying Bezier surfaces directly on the screen is challenging because of their
-        smoothness, which requires more complex calculations for accurate depiction. Therefore,
-        typically, Bezier surfaces are converted into triangle meshes before being displayed on the
-        screen. This allows us to see a very smooth surface of a 3D model on the screen. The storage
-        method for triangle meshes needs two lists: one for vertices and one for triangles. Although
-        this method is straightforward, it is limited when it comes to traversing a large number of
-        triangles for complex geometric processing. For example, if I want to find all the triangles
-        around a specific triangle, I need to check every triangle in the framework, which can be
-        slow and complicated if there are many triangles.<span style="font-style: italic;">😫</span>
-    </p>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_step5.png" alt="Step 5">
+                    <div class="gallery-caption">Curve3 - Step 5</div>
+                </div>
 
 
-    <p>
-        Therefore, at this point, our lecture introduced the half-edge data structure, a more
-        efficient way to
-        handle triangle meshes. It provides quick access and more effective mesh processing. The
-        characteristic of the half-edge data structure is that each triangle is not only composed of
-        points (vertices) and edges, but also an additional element called "half-edge." This
-        "half-edge" acts like a small bridge connecting the points and edges in a triangle, storing
-        all the necessary connection information. For instance, if I now want to find all the
-        triangles adjacent to a triangle, it's like having a map that not only marks all the scenic
-        spots (points) but also shows how to get from one scenic spot to another (edges and faces).
-    </p>
-</div>
-<section id="task3">
-    <div class="container">
-        <h2 class="section-title">Task 3 - Area-Weighted Vertex Normals</h2>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_completed.png" alt="Completed Curve">
+                    <div class="gallery-caption">Curve3 - Completed</div>
+                </div>
 
-        <p>
-            In class, when we covered this topic, I personally understood it through the "Shade Smooth"
-            function in Blender.
-        </p>
-        <p>
-            In Blender, there are two shading methods provided: shade flat and shade smooth. I think the
-            so-called area-weighted vertex normals are similar to Blender's "Shade Smooth" function in
-            that both are based on a similar concept. They are used to achieve a smoother, more natural
-            surface
-            effect when rendering models.
-        </p>
-        <img src="../hw2_IMGs/Task3_2waysOfShading.png" alt="Task 3 blender exaple">
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task1_curve3_movingpoints.png" alt="Moving Points">
+                    <div class="gallery-caption">Curve3 - Moving Control Points</div>
+                </div>
+            </div>
 
-        <h2>About My Implementation:</h2>
-        <p>
-            The essence of area-weighted vertex normals lies in converting the normals of a face into the
-            normals
-            of a vertex. A vertex may be connected to many faces, so my goal is to find a comprehensive
-            average
-            direction that represents all these faces.
-        </p>
-
-        <ol>
-            <li>
-                <strong>Calculate Each Face's Normal:</strong> Start by calculating the normal of each
-                face. For
-                a given vertex, find each adjacent triangle. The normal is equal to the cross product of
-                two
-                vectors of the triangle. Specifically, I used a loop
-                <code>do {...} while (h != halfedge());</code> to traverse all the adjacent half-edges
-                of a
-                vertex. This ensures all the faces adjacent to that vertex are covered, and I checked if
-                the
-                face is a boundary face with <code>if (!h->face()->isBoundary()) {...}</code> since
-                boundary
-                faces may not be applicable for normal face normal calculations. Then I used
-                <code>Vector3D faceNormal = cross(edge1, edge2);</code> to calculate the face's normal.
-            </li>
-            <li>
-                <strong>Weight the Normals by Area:</strong> This ensures that larger faces have a
-                greater
-                impact on the vertex normal. I calculated the area with
-                <code>double area = faceNormal.norm() / 2.0;</code>, allowing for a weighted
-                calculation.
-            </li>
-            <li>
-                <strong>Summation:</strong> Sum up all the normals around the vertex to get an overall
-                normal
-                vector. The implementation is <code>N += faceNormal.unit() * area;</code>. Here I used
-                <code>faceNormal.unit()</code> because the length of the unnormalized faceNormal is
-                twice the
-                area. Multiplying it by the area would square the area, resulting in a physically
-                meaningless
-                result.
-            </li>
-            <li>
-                <strong>Normalize the Overall Normal Vector:</strong> Scale the vector to unit length
-                (i.e.,
-                length of 1). <code>return N.unit();</code> The normalized normal vector maintains its
-                original
-                direction but with a uniform length. This is important for lighting and rendering, as it
-                ensures
-                that all normal vectors contribute evenly to the calculation.
-            </li>
-        </ol>
-        <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
-        <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
-        <div class="card">
-
-            <h4>Understanding the Impact of Not Normalizing:</h4>
+            <h2 class="section-title">Task 2:Bezier Surfaces with Separable 1D de Castlejau.</h2>
             <p>
-                If the normal vectors are not uniform in length, i.e., not normalized, several issues can
-                arise
-                during lighting calculations and rendering:
+                The de Casteljau algorithm is also utilized for evaluating Bezier curves. For Bezier surfaces, this algorithm is extended to two parameters, commonly represented as u and v. While a Bezier curve is defined by a single set of control points, a Bezier surface is defined by a grid of control points. The extension to surfaces is applied as a separable 1D de Castlejau algorithm twice separately. First, applying the algorithm in one parameter direction (u) across all rows or columns of control points produces a set of new control points that define a Bezier curve in the other parameter direction (v). Then, the algorithm will recursively reduce the number of control points by linearly interpolating between those two parameters until a single point remains. Finally, this single point is the resulting point on the Bezier surface for the given parameters u and v.
+            </p>
+
+            <p>
+                In the case of integrating the algorithm, we must work with these three functions step by step. First is the BezierPath::evaluateStep(…) function, which is responsible for performing one step of the de Castlejau algorithm to reduce the grid of control points. This function will be modified just like the step we did for the Bezier curve and only needs to change from Vector2D to Vector3D.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code1.png" alt="Task 3 before" style="width:40%; margin:auto;">
+            </div>
+
+            <p>
+                Then, secondly, continue to the BezierPatch::evaluate1D(…) function, which will be responsible for iterating until a single point is obtained for each direction.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code2.png" alt="Task 3 before" style="width:40%; margin:auto;">
+            </div>
+
+            <p>
+                Finally, the last step is to apply BezierPatch::evaluate(…) to combine all these steps to find the final point on the surface.
+            </p>
+
+            <div style="text-align:center;">
+                <img src="../hw2_IMGs/Task2_code3.png" alt="Task 3 before" style="width:40%; margin:auto;">
+            </div>
+
+
+
+        </div>
+    </section>
+
+
+
+    <!-- Section II : Task3 -->
+
+    <div class="container">
+        <h2 style="text-align: center;">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+        <h3 style="text-align: center;">Overview</h3>
+        <h4>TODO:</h4>
+        <ul>
+            <li>
+                Read this introduction to the half-edge data structure to reinforce your understanding
+                of it from Lecture 8.
+            </li>
+            <li>Read through this primer on how to navigate meshes using the HalfedgeMesh class.</li>
+            <li>
+                Read and understand the documentation at the beginning of halfedgeMesh.h, which provides
+                supplementary information to the primer.
+            </li>
+        </ul>
+        <h4>Why Bezier surfaces are much more difficult to render directly? </h4>
+
+        <p>
+            The advantage of Bezier surfaces is that they can create very smooth surfaces. They do not
+            require much storage space, as only the information of those control points is needed.
+            However, displaying Bezier surfaces directly on the screen is challenging because of their
+            smoothness, which requires more complex calculations for accurate depiction. Therefore,
+            typically, Bezier surfaces are converted into triangle meshes before being displayed on the
+            screen. This allows us to see a very smooth surface of a 3D model on the screen. The storage
+            method for triangle meshes needs two lists: one for vertices and one for triangles. Although
+            this method is straightforward, it is limited when it comes to traversing a large number of
+            triangles for complex geometric processing. For example, if I want to find all the triangles
+            around a specific triangle, I need to check every triangle in the framework, which can be
+            slow and complicated if there are many triangles.<span style="font-style: italic;">😫</span>
+        </p>
+
+
+        <p>
+            Therefore, at this point, our lecture introduced the half-edge data structure, a more
+            efficient way to
+            handle triangle meshes. It provides quick access and more effective mesh processing. The
+            characteristic of the half-edge data structure is that each triangle is not only composed of
+            points (vertices) and edges, but also an additional element called "half-edge." This
+            "half-edge" acts like a small bridge connecting the points and edges in a triangle, storing
+            all the necessary connection information. For instance, if I now want to find all the
+            triangles adjacent to a triangle, it's like having a map that not only marks all the scenic
+            spots (points) but also shows how to get from one scenic spot to another (edges and faces).
+        </p>
+    </div>
+    <section id="task3">
+        <div class="container">
+            <h2 class="section-title">Task 3 - Area-Weighted Vertex Normals</h2>
+
+            <p>
+                In class, when we covered this topic, I personally understood it through the "Shade Smooth"
+                function in Blender.
+            </p>
+            <p>
+                In Blender, there are two shading methods provided: shade flat and shade smooth. I think the
+                so-called area-weighted vertex normals are similar to Blender's "Shade Smooth" function in
+                that both are based on a similar concept. They are used to achieve a smoother, more natural
+                surface
+                effect when rendering models.
+            </p>
+            <img src="../hw2_IMGs/Task3_2waysOfShading.png" alt="Task 3 blender exaple">
+
+            <h2>About My Implementation:</h2>
+            <p>
+                The essence of area-weighted vertex normals lies in converting the normals of a face into the
+                normals
+                of a vertex. A vertex may be connected to many faces, so my goal is to find a comprehensive
+                average
+                direction that represents all these faces.
+            </p>
+
+            <ol>
+                <li>
+                    <strong>Calculate Each Face's Normal:</strong> Start by calculating the normal of each
+                    face. For
+                    a given vertex, find each adjacent triangle. The normal is equal to the cross product of
+                    two
+                    vectors of the triangle. Specifically, I used a loop
+                    <code>do {...} while (h != halfedge());</code> to traverse all the adjacent half-edges
+                    of a
+                    vertex. This ensures all the faces adjacent to that vertex are covered, and I checked if
+                    the
+                    face is a boundary face with <code>if (!h->face()->isBoundary()) {...}</code> since
+                    boundary
+                    faces may not be applicable for normal face normal calculations. Then I used
+                    <code>Vector3D faceNormal = cross(edge1, edge2);</code> to calculate the face's normal.
+                </li>
+                <li>
+                    <strong>Weight the Normals by Area:</strong> This ensures that larger faces have a
+                    greater
+                    impact on the vertex normal. I calculated the area with
+                    <code>double area = faceNormal.norm() / 2.0;</code>, allowing for a weighted
+                    calculation.
+                </li>
+                <li>
+                    <strong>Summation:</strong> Sum up all the normals around the vertex to get an overall
+                    normal
+                    vector. The implementation is <code>N += faceNormal.unit() * area;</code>. Here I used
+                    <code>faceNormal.unit()</code> because the length of the unnormalized faceNormal is
+                    twice the
+                    area. Multiplying it by the area would square the area, resulting in a physically
+                    meaningless
+                    result.
+                </li>
+                <li>
+                    <strong>Normalize the Overall Normal Vector:</strong> Scale the vector to unit length
+                    (i.e.,
+                    length of 1). <code>return N.unit();</code> The normalized normal vector maintains its
+                    original
+                    direction but with a uniform length. This is important for lighting and rendering, as it
+                    ensures
+                    that all normal vectors contribute evenly to the calculation.
+                </li>
+            </ol>
+            <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
+            <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
+            <div class="card">
+
+                <h4>Understanding the Impact of Not Normalizing:</h4>
+                <p>
+                    If the normal vectors are not uniform in length, i.e., not normalized, several issues can
+                    arise
+                    during lighting calculations and rendering:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Inconsistent Lighting Calculations:</strong> In 3D rendering, normal vectors are
+                        typically used for calculating lighting, especially in determining how surfaces reflect
+                        light.
+                        If the normal vectors are not uniform in length, lighting intensity calculations can be
+                        incorrect. In lighting models like the Phong model, the length of normals affects the
+                        intensity
+                        of reflected light. Longer normals can make some areas appear brighter or darker than
+                        they
+                        actually are.
+                    </li>
+                    <li>
+                        <strong>Visual Inconsistency:</strong> Non-uniform normal vectors can lead to visually
+                        incoherent images. Some areas might appear abnormal, like unexpected bright spots or
+                        dark areas,
+                        which do not correspond to the object's actual material and lighting conditions.
+                    </li>
+                    <li>
+                        <strong>Performance Impact:</strong> Normalizing normal vectors is usually a standard
+                        step in
+                        the rendering pipeline. If the normals are not normalized, additional calculations may
+                        need to
+                        be performed during the lighting processing stage, which can affect rendering
+                        performance.
+                    </li>
+                    <li>
+                        <strong>Cumulative Calculation Errors:</strong> In complex rendering scenes,
+                        unnormalized
+                        normals can lead to the accumulation of calculation errors, especially during multiple
+                        rendering
+                        iterations or when dealing with complex lighting effects.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section II : Task4 -->
+    <section id="task4">
+        <div class="container">
+            <h2 class="section-title">Task 4: Edge Flip</h2>
+
+            <p>
+                When performing operations like edge flipping, it's essentially about rearranging the connections of
+                these elements. To maintain the integrity and functionality of the mesh, I need to ensure:
             </p>
             <ul>
                 <li>
-                    <strong>Inconsistent Lighting Calculations:</strong> In 3D rendering, normal vectors are
-                    typically used for calculating lighting, especially in determining how surfaces reflect
-                    light.
-                    If the normal vectors are not uniform in length, lighting intensity calculations can be
-                    incorrect. In lighting models like the Phong model, the length of normals affects the
-                    intensity
-                    of reflected light. Longer normals can make some areas appear brighter or darker than
-                    they
-                    actually are.
+                    Each half-edge correctly points to its corresponding next half-edge, twin half-edge, the vertex it
+                    belongs to, as well as its edge and face.
                 </li>
-                <li>
-                    <strong>Visual Inconsistency:</strong> Non-uniform normal vectors can lead to visually
-                    incoherent images. Some areas might appear abnormal, like unexpected bright spots or
-                    dark areas,
-                    which do not correspond to the object's actual material and lighting conditions.
-                </li>
-                <li>
-                    <strong>Performance Impact:</strong> Normalizing normal vectors is usually a standard
-                    step in
-                    the rendering pipeline. If the normals are not normalized, additional calculations may
-                    need to
-                    be performed during the lighting processing stage, which can affect rendering
-                    performance.
-                </li>
-                <li>
-                    <strong>Cumulative Calculation Errors:</strong> In complex rendering scenes,
-                    unnormalized
-                    normals can lead to the accumulation of calculation errors, especially during multiple
-                    rendering
-                    iterations or when dealing with complex lighting effects.
-                </li>
+                <li>Each vertex, edge, and face correctly point to one of the half-edges associated with them.</li>
             </ul>
-        </div>
-    </div>
-</section>
-
-<!-- Section II : Task4 -->
-<section id="task4">
-    <div class="container">
-        <h2 class="section-title">Task 4: Edge Flip</h2>
-
-        <p>
-            When performing operations like edge flipping, it's essentially about rearranging the connections of
-            these elements. To maintain the integrity and functionality of the mesh, I need to ensure:
-        </p>
-        <ul>
-            <li>
-                Each half-edge correctly points to its corresponding next half-edge, twin half-edge, the vertex it
-                belongs to, as well as its edge and face.
-            </li>
-            <li>Each vertex, edge, and face correctly point to one of the half-edges associated with them.</li>
-        </ul>
-        <p>
-            This process, in my understanding, is like moving some pieces in a puzzle, where I need to ensure that
-            all the puzzle pieces are still correctly fitted together. In this process, each puzzle piece (mesh
-            element) needs to be correctly connected to others to maintain the integrity of the entire pattern
-            (mesh). If these pointers point to the wrong elements, the mesh might experience issues, such as
-            breaking or distortion (which I encountered during implementation).
-        </p>
+            <p>
+                This process, in my understanding, is like moving some pieces in a puzzle, where I need to ensure that
+                all the puzzle pieces are still correctly fitted together. In this process, each puzzle piece (mesh
+                element) needs to be correctly connected to others to maintain the integrity of the entire pattern
+                (mesh). If these pointers point to the wrong elements, the mesh might experience issues, such as
+                breaking or distortion (which I encountered during implementation).
+            </p>
 
             <h2>How to Implement Edge Flip</h2>
             <ol>
-                <li><strong>Confirm Flip Conditions:</strong> <code>if (e0-&gt;isBoundary()) { return e0; }</code>
+                <li>
+                    <strong>Confirm Flip Conditions:</strong> <code>if (e0-&gt;isBoundary()) { return e0; }</code>
                     Ensure that the selected edge is not a boundary edge. If the edge or its adjacent faces are boundary
-                    elements, do not perform the flip.</li>
-                <li><strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
+                    elements, do not perform the flip.
+                </li>
+                <li>
+                    <strong>Identify Key Elements:</strong> Determine the elements directly related to the edge to be
                     flipped: four vertices, six half-edges, two faces.
                     <code>VertexIter v0, v1, v2, v3; HalfedgeIter h0, h1, h2, h3; FaceIter f0, f1;</code>
                 </li>
                 <img src="../hw2_IMGs/Task4 _IdentifyElements.png" alt="Identify Elements">
-                <li><strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
+                <li>
+                    <strong>Update Pointers and Half-Edge Pointers of Vertices, Edges, and Faces:</strong> Reallocate
                     the pointers of the half-edges to reflect the new connections.
                     <code>h0-&gt;setNeighbors(...), h1-&gt;setNeighbors(...), ...</code> Ensure that each half-edge's
                     next, twin, vertex, edge, and face pointers are correctly directed towards the appropriate elements.
@@ -345,11 +382,13 @@
                 </li>
                 <img src="../hw2_IMGs/Task4 _reassign_pointer.png" alt="Update Pointers">
                 <img src="../hw2_IMGs/Task4 _Failed.png" alt="Failed attempts">
-                <li>My Fix: This is a correction made by ChatGPT. I attempted to comprehend it, but it didn't seem to
+                <li>
+                    My Fix: This is a correction made by ChatGPT. I attempted to comprehend it, but it didn't seem to
                     make sense. Regardless, I also revised my own code. After attending the office hours on Tuesday, I
                     realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
                     the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface,
-                    it functions well.<span style="font-style: italic;">😁</span></li>
+                    it functions well.<span style="font-style: italic;">😁</span>
+                </li>
                 <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
 
             </ol>
@@ -361,59 +400,75 @@
         <div class="container">
             <h2 class="section-title">Task 5: Face Splitting</h2>
 
-            <p>Splitting a boundary edge indeed makes sense, but flipping a boundary edge does not. (Can you explain why
-                this is the case?) </p>
+            <p>
+                Splitting a boundary edge indeed makes sense, but flipping a boundary edge does not. (Can you explain why
+                this is the case?)
+            </p>
             <div class="card">
                 <h4>Edge Operations on Meshes: Splitting vs. Flipping Boundary Edges</h4>
-                <p>Understanding the difference between splitting and flipping boundary edges in mesh processing is
-                    crucial for maintaining the integrity and structure of the mesh:</p>
+                <p>
+                    Understanding the difference between splitting and flipping boundary edges in mesh processing is
+                    crucial for maintaining the integrity and structure of the mesh:
+                </p>
                 <ul>
-                    <li><strong>Validity of Splitting a Boundary Edge:</strong> Splitting a boundary edge involves
+                    <li>
+                        <strong>Validity of Splitting a Boundary Edge:</strong> Splitting a boundary edge involves
                         adding a new vertex along the edge, effectively dividing it into two. This operation is valid
                         for boundary edges as it extends the mesh by adding more detail, without altering the
-                        fundamental shape or the integrity of the mesh.</li>
-                    <li><strong>Impracticality of Flipping a Boundary Edge:</strong> Flipping an edge is a process of
+                        fundamental shape or the integrity of the mesh.
+                    </li>
+                    <li>
+                        <strong>Impracticality of Flipping a Boundary Edge:</strong> Flipping an edge is a process of
                         reassigning connections between vertices, typically applicable to internal edges. For boundary
                         edges, flipping is not feasible as they are part of only one triangle and lack the quadrilateral
                         structure needed for flipping. Attempting to flip a boundary edge could distort or break the
                         mesh's intended structure, as it would either create non-manifold edges or disrupt the mesh's
-                        boundary.</li>
-                    <li><strong>Preservation of Mesh Structure:</strong> In mesh processing, operations should preserve
+                        boundary.
+                    </li>
+                    <li>
+                        <strong>Preservation of Mesh Structure:</strong> In mesh processing, operations should preserve
                         the mesh's overall structure and integrity. Splitting boundary edges aligns with this principle
                         by adding detail without changing the mesh's shape, while flipping boundary edges does not and
-                        can lead to structural inconsistencies.</li>
+                        can lead to structural inconsistencies.
+                    </li>
                 </ul>
             </div>
 
-            <p>Task 5 requires me to perform a Edge Split. In the process of splitting, new vertices, edges, and faces
+            <p>
+                Task 5 requires me to perform a Edge Split. In the process of splitting, new vertices, edges, and faces
                 are created. My focus is on reassigning pointers to ensure that the new relationships are still correct
                 after the split. This step sounds simple, but I found that during implementation, due to not checking
                 carefully, I sometimes reassigned the next edge or vertex incorrectly, which often led to errors. For
-                example, I forgot to update the edge's pointer to the halfedge...</p>
+                example, I forgot to update the edge's pointer to the halfedge...
+            </p>
             <img src="../hw2_IMGs/Task5_SomeErrors.png" alt="Errors">
 
             <h2>Implementation Steps</h2>
             <ol>
-                <li><strong>Boundary Edge Check:</strong> First, check if the edge is a boundary edge. If so:
+                <li>
+                    <strong>Boundary Edge Check:</strong> First, check if the edge is a boundary edge. If so:
                     <code>return VertexIter()</code>; And for the extra credit part I will explain later.
                 </li>
-                <li><strong>Create New Vertex:</strong> Create a new vertex at the midpoint of the edge to be split.
+                <li>
+                    <strong>Create New Vertex:</strong> Create a new vertex at the midpoint of the edge to be split.
                     This involves getting the two vertices at the ends of the e0 and computing the midpoint:
                     <code>Vector3D midpoint = (pos0 + pos1) / 2.0;</code>
                 </li>
-                <li><strong>Update Mesh Connectivity:</strong> With the new vertex added, it's necessary to create 3 new
+                <li>
+                    <strong>Update Mesh Connectivity:</strong> With the new vertex added, it's necessary to create 3 new
                     edges, 6 new half edges, and 2 new faces accordingly.
                 </li>
                 <img src="../hw2_IMGs/Task5_graphics.png" alt="Task5_graphics">
-                <li><strong>Update Pointers:</strong> Ensure all halfedges, vertices, and edges are updated to point to
+                <li>
+                    <strong>Update Pointers:</strong> Ensure all halfedges, vertices, and edges are updated to point to
                     the correct elements after the split.
                 </li>
-                <li><strong>Testing Flip:</strong> Before and After Face Splitting.<img
-                        src="../hw2_IMGs/Task5_BeforeAfterSplit.png" alt="Before and After Face Splitting">Here are
+                <li>
+                    <strong>Testing Flip:</strong> Before and After Face Splitting.<img src="../hw2_IMGs/Task5_BeforeAfterSplit.png" alt="Before and After Face Splitting">Here are
                     screenshots showing the mesh before and
                     after combining edge splitting and flipping.<img src="../hw2_IMGs/Task5_CombineSplitFlip.png"
-                        alt="Combining Edge Split and Flip">
-                </li>        
+                                                                     alt="Combining Edge Split and Flip">
+                </li>
             </ol>
 
             <h2>Extra Credit - Split Boundary Edges</h2>
