@@ -151,11 +151,22 @@
 
             <h2 class="section-title">Task 2:Bezier Surfaces with Separable 1D de Castlejau.</h2>
             <p>
-                The de Casteljau algorithm is also utilized for evaluating Bezier curves. For Bezier surfaces, this algorithm is extended to two parameters, commonly represented as u and v. While a Bezier curve is defined by a single set of control points, a Bezier surface is defined by a grid of control points. The extension to surfaces is applied as a separable 1D de Castlejau algorithm twice separately. First, applying the algorithm in one parameter direction (u) across all rows or columns of control points produces a set of new control points that define a Bezier curve in the other parameter direction (v). Then, the algorithm will recursively reduce the number of control points by linearly interpolating between those two parameters until a single point remains. Finally, this single point is the resulting point on the Bezier surface for the given parameters u and v.
+                The de Casteljau algorithm is also utilized for evaluating Bezier curves. For Bezier surfaces, this
+                algorithm is extended to two parameters, commonly represented as u and v. While a Bezier curve is
+                defined by a single set of control points, a Bezier surface is defined by a grid of control points. The
+                extension to surfaces is applied as a separable 1D de Castlejau algorithm twice separately. First,
+                applying the algorithm in one parameter direction (u) across all rows or columns of control points
+                produces a set of new control points that define a Bezier curve in the other parameter direction (v).
+                Then, the algorithm will recursively reduce the number of control points by linearly interpolating
+                between those two parameters until a single point remains. Finally, this single point is the resulting
+                point on the Bezier surface for the given parameters u and v.
             </p>
 
             <p>
-                In the case of integrating the algorithm, we must work with these three functions step by step. First is the BezierPath::evaluateStep(…) function, which is responsible for performing one step of the de Castlejau algorithm to reduce the grid of control points. This function will be modified just like the step we did for the Bezier curve and only needs to change from Vector2D to Vector3D.
+                In the case of integrating the algorithm, we must work with these three functions step by step. First is
+                the BezierPath::evaluateStep(…) function, which is responsible for performing one step of the de
+                Castlejau algorithm to reduce the grid of control points. This function will be modified just like the
+                step we did for the Bezier curve and only needs to change from Vector2D to Vector3D.
             </p>
 
             <div style="text-align:center;">
@@ -163,7 +174,8 @@
             </div>
 
             <p>
-                Then, secondly, continue to the BezierPatch::evaluate1D(…) function, which will be responsible for iterating until a single point is obtained for each direction.
+                Then, secondly, continue to the BezierPatch::evaluate1D(…) function, which will be responsible for
+                iterating until a single point is obtained for each direction.
             </p>
 
             <div style="text-align:center;">
@@ -171,7 +183,8 @@
             </div>
 
             <p>
-                Finally, the last step is to apply BezierPatch::evaluate(…) to combine all these steps to find the final point on the surface.
+                Finally, the last step is to apply BezierPatch::evaluate(…) to combine all these steps to find the final
+                point on the surface.
             </p>
 
             <div style="text-align:center;">
@@ -466,11 +479,75 @@
 
             <h2>Extra Credit - Split Boundary Edges</h2>
             <p>TBU</p>
-            <img src="../hw2_IMGs/LoopSubdivisionGIF.gif" alt="Loop Subdivision Process">
 
 
         </div>
     </section>
+    <section id="task6">
+        <div class="container">
+            <h2 class="section-title">Task 6: 3D Mesh Upsampling and Loop Subdivision</h2>
+
+            <p>In this task, we explore the challenges of upsampling 3D meshes, which is significantly more complex than
+                upsampling 2D images, such as the bilinear filtering discussed in Lecture 5. A key challenge is that
+                mesh vertices often occupy irregular locations, unlike the regular grid of a 2D image. There are several
+                other factors that complicate 3D mesh upsampling:</p>
+            <ul>
+                <li><strong>Topological Complexity:</strong> 3D meshes typically have a more complex topological
+                    structure compared to 2D images, making it difficult to simply fill gaps.</li>
+                <li><strong>Geometric Distortion:</strong> Upsampling can introduce geometric distortions, particularly
+                    in curved or edged areas of the mesh.</li>
+                <li><strong>Texture Mapping Issues:</strong> 3D models often come with texture mapping, which needs to
+                    be adjusted during upsampling, a process that can lead to texture stretching or other mapping
+                    errors.</li>
+                <li><strong>Rendering Costs:</strong> Increasing the resolution of 3D meshes significantly raises
+                    rendering time and computational costs.</li>
+                <li><strong>Lighting and Shadow Adjustments:</strong> Upsampling can alter the effects of lighting and
+                    shadows on the mesh surface, necessitating additional computations.</li>
+                <li><strong>Data Structure Limitations:</strong> 3D meshes rely on specific data structures, which
+                    impose certain restrictions on vertex addition or modification.</li>
+            </ul>
+
+            <p>I initially struggled to understand why we use the formula <code>3/8 * (A + B) + 1/8 * (C + D)</code> in
+                Loop subdivision instead of simply averaging the midpoints of triangle edges. I realized that this
+                formula is central to Loop subdivision, aiming to increase mesh smoothness while preserving detail. This
+                approach avoids sharp edges or unnatural shapes that might result from simpler vertex addition.</p>
+            <p>For new vertices (those added on the edge midpoints), the standard method is to average the positions of
+                the edge endpoints. However, Loop subdivision also considers the positions of adjacent vertices to
+                further enhance mesh smoothness. That's why we use the formula for new vertex positions.</p>
+            <img src="../hw2_IMGs/Task6_LoopSubdivision.png" alt="Loop Subdivision">
+
+            <p>Before implementing Task 6, I reviewed the formula
+                <code>(1 - n * u) * original_position + u * original_neighbor_position_sum</code>. It's crucial for
+                adjusting the positions of old vertices based on their neighboring vertices, which helps in maintaining
+                the geometric features while smoothing the mesh. The weight <strong>u</strong> depends on the vertex
+                degree
+                and balances between the original position and the average position of neighboring vertices.
+            </p>
+
+            <h2>Implementation Steps</h2>
+            <ol>
+                <li><strong>Vertex Position Calculation:</strong> Calculate new positions for all vertices using the
+                    Loop subdivision rule, marking each as an original mesh vertex.</li>
+                <li><strong>Edge Position Update:</strong> Update positions associated with edges and store them.</li>
+                <li><strong>Edge Splitting:</strong> Split every edge, noting which are new and which are from the
+                    original mesh. Avoid splitting edges that were just split.</li>
+                <li><strong>Edge Flipping:</strong> Flip any new edge that connects an old and new vertex.</li>
+                <li><strong>Position Update:</strong> Update the mesh with the new vertex positions.</li>
+            </ol>
+            <p>By following these steps, I managed to execute the splits and flips correctly, updating the positions as
+                necessary to achieve the desired refined mesh.</p>
+            <!-- <img src="../hw2_IMGs/Task6_RefinedMesh.png" alt="Refined Mesh"> -->
+            <img src="../hw2_IMGs/LoopSubdivisionGIF.gif" alt="Loop Subdivision Process">
+            <img src="../hw2_IMGs/Task6_RefinedMesh.gif" alt="Loop Subdivision Process">
+            <img src="../hw2_IMGs/Task6_RefinedMesh_cow.gif" alt="Loop Subdivision Process">
+
+            <h2>Conclusion</h2>
+            <p>Task 6 demonstrates the complexity of 3D mesh upsampling and the effectiveness of the Loop subdivision
+                method. By carefully adjusting vertex positions and respecting the mesh's topological and geometric
+                properties, we can achieve a smoother and more detailed mesh.</p>
+        </div>
+    </section>
+
 
 
     <footer>
