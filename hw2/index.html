@@ -38,7 +38,7 @@
             </nav>
         </div>
     </header>
-    
+
 
 
     <section id="overview">
@@ -60,6 +60,7 @@
             <h3 style="text-align: center;">Overview</h3>
             <h4>TODO:</h4>
             <ul>
+                <li>read meshedit</li>
                 <li>
                     Using Castlejau algorithm to evaluate Bezier curves and surfaces.
                 </li>
@@ -74,10 +75,11 @@
                 This part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes
                 of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a
                 numerical method that recursively subdivides the curve at each iteration step, moving from the initial
-                control points to the evaluation point on the curve. The Bezier curve is made from a series of control
-                points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a
-                parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control
-                point, and when t = 1, the point on the curve is the last control point.
+                control points to the evaluation point on the curve. <strong>The Bezier curve is made from a series of
+                    control
+                    points, and de Castlejau’s algorithm enables us to calculate the control points by using t as a
+                    parameter, with values ranging from 0 – 1. When t = 0, the point on the curve is the first control
+                    point, and when t = 1, the point on the curve is the last control point.</strong>
             <p>
             <p>
                 In order to implement Castlejau’s algorithm on this first task 1, we need to pay attention to the header
@@ -89,7 +91,8 @@
 
             </p>
             <p>
-                We defined a function evaluateStep, creating a new vector to store the interpolated points. Going back
+                In function evaluateStep, we created a new vector2D array called newPoints to store the interpolated
+                points. Going back
                 to the definition again, the Bezier curve is a curve that can be manipulated by using a series of
                 control points. Its degree of n is defined by n+1 control points and based on parameter t with a value
                 starting from 0 – 1 (start to end point of curve). This specific loop iterates through each pair of
@@ -101,10 +104,10 @@
             </div>
 
             <p>
-                To apply the Castlejau’s method, inside a loop, we calculate the interpolated point between each pair of
-                consecutive points using the formula (1 - t) * currentPoint + t * nextPoint. This generates the points
-                for the next level of the algorithm. We continue this process recursively by calling evaluateStep on the
-                new set of points until we're left with one final point. This point is the position on the Bezier curve
+                The new interpolated point is calculated by (1 - t) * currentPoint + t * nextPoint. This generates the
+                points that can be used for the next level of subdivision. We continue this process recursively by
+                calling evaluateStep until we're left with one final point. This point is the position on the Bezier
+                curve
                 corresponding to the parameter t.
             </p>
             <h2>The Bezier Curves</h2>
@@ -421,7 +424,7 @@
                     make sense. Regardless, I also revised my own code. After attending the office hours on Tuesday, I
                     realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
                     the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface,
-                    it functions well.<span style="font-style: italic;">😁</span></li>
+                    it functions well.😁</li>
                 <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
 
             </ol>
@@ -467,7 +470,9 @@
             <h2>Implementation Steps</h2>
             <ol>
                 <li><strong>Boundary Edge Check:</strong> First, check if the edge is a boundary edge. If so:
-                    <code>return VertexIter()</code>; And for the extra credit part I will explain later.
+                    <code>return VertexIter()</code>; And for the <strong>Extra Credit</strong> part I basically did the same as the
+                    non boundary part except when reassign relationships, I assign the half edge as following.            
+                    <img src="../hw2_IMGs/Task5_extraCredit.png" alt="Extra credit">
                 </li>
                 <li><strong>Create New Vertex:</strong> Create a new vertex at the midpoint of the edge to be split.
                     This involves getting the two vertices at the ends of the e0 and computing the midpoint:
@@ -488,8 +493,6 @@
                 </li>
             </ol>
 
-            <h2>Extra Credit - Split Boundary Edges</h2>
-            <p>TBU</p>
 
 
         </div>
@@ -541,8 +544,9 @@
                     subdivision round, preparing the mesh for subsequent iterations.</li>
                 <li><strong>Old Vertex Position Calculation:</strong> Calculate new positions for all vertices using the
                     Loop subdivision rule, marking each as an original mesh vertex.</li>
-                <li><strong>New Vertex Position Calculation:</strong> Update new vertices' positions associated with edges and store them to the edge. <img
-                        src="../hw2_IMGs/Task6_calculateNewVertex.png" alt="Vertex Position Calculation"></li>
+                <li><strong>New Vertex Position Calculation:</strong> Update new vertices' positions associated with
+                    edges and store them to the edge. <img src="../hw2_IMGs/Task6_calculateNewVertex.png"
+                        alt="Vertex Position Calculation"></li>
 
                 <li><strong>Edge Splitting:</strong> Split every edge, noting which are new and which are from the
                     original mesh. Avoid splitting edges that were just split.</li>
@@ -589,7 +593,9 @@
                 smoothly. I'm really happy 😁</p>
             <img src="../hw2_IMGs/Task6_testQuadBall.png" alt="testQuadBall">
 
-
+                
+            <h2>Extra Credit - Support meshes with boundary. </h2>
+            <h2>Extra Credit - Implement additional subdivision schemes. </h2>
 
 
             <h2>Conclusion</h2>
