@@ -178,3 +178,29 @@ img {
     flex: 0 0 30%; /* This makes each item take up about 30% of the container's width */
     margin: 10px; /* Adjust margin as needed */
 }
+.horizontal-nav {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.section-nav {
+    margin-right: 20px;
+}
+
+.section-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.section-nav li {
+    margin-right: 10px;
+}
+
+.section-nav a {
+    text-decoration: none;
+    color: #ffdefe;
+    font-weight: bold;
+}

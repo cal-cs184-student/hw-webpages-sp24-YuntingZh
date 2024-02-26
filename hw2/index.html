@@ -12,30 +12,33 @@
             <div id="branding">
                 <h1>Computer Graphics Homework 2 Report</h1>
             </div>
-            <nav>
-                <!-- Section I: Task 1, Task 2 -->
-                <h2>Section I</h2>
-                <ul>
-                    <li><a href="#task1">Task 1</a></li>
-                    <li><a href="#task2">Task 2</a></li>
-                </ul>
-
-                <!-- Section II: Task 3, Task 4, Task 5, Task 6 -->
-                <h2>Section II</h2>
-                <ul>
-                    <li><a href="#task3">Task 3</a></li>
-                    <li><a href="#task4">Task 4</a></li>
-                    <li><a href="#task5">Task 5</a></li>
-                    <li><a href="#task6">Task 6</a></li>
-                </ul>
-
-                <!-- Extra Credit -->
-                <ul>
-                    <li><a href="#extra">Extra Credit</a></li>
-                </ul>
+            <nav class="horizontal-nav">
+                <div class="section-nav">
+                    <h2>Section I</h2>
+                    <ul>
+                        <li><a href="#task1">Task 1</a></li>
+                        <li><a href="#task2">Task 2</a></li>
+                    </ul>
+                </div>
+                <div class="section-nav">
+                    <h2>Section II</h2>
+                    <ul>
+                        <li><a href="#task3">Task 3</a></li>
+                        <li><a href="#task4">Task 4</a></li>
+                        <li><a href="#task5">Task 5</a></li>
+                        <li><a href="#task6">Task 6</a></li>
+                    </ul>
+                </div>
+                <div class="section-nav">
+                    <h2>Section III</h2>
+                    <ul>
+                        <li><a href="#extra">Extra Credit</a></li>
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
+    
 
 
     <section id="overview">
@@ -68,7 +71,7 @@
             <h2 class="section-title">Task 1:Bezier Curves with 1D de Castlejau Subdivison.</h2>
 
             <p>
-                This hahaha part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes
+                This part aims to generate a Bezier curve and make our own style with 6 points. Behind the scenes
                 of this curve, the crucial part is implementing Castlejau’s algorithm to evaluate the curve. It's a
                 numerical method that recursively subdivides the curve at each iteration step, moving from the initial
                 control points to the evaluation point on the curve. The Bezier curve is made from a series of control
@@ -316,8 +319,16 @@
                     that all normal vectors contribute evenly to the calculation.
                 </li>
             </ol>
-            <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
-            <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img class="uniform-pictures" src="../hw2_IMGs/Task3_before.png" alt="Task 3 before">
+                    <div class="gallery-caption">Before</div>
+                </div>
+                <div class="gallery-item">
+                    <img class="uniform-pictures" src="../hw2_IMGs/Task3_after.png" alt="Task 3 after">
+                    <div class="gallery-caption">After</div>
+                </div>
+            </div>
             <div class="card">
 
                 <h4>Understanding the Impact of Not Normalizing:</h4>
@@ -507,7 +518,7 @@
                     impose certain restrictions on vertex addition or modification.</li>
             </ul>
 
-            <p>I initially struggled to understand why we use the formula <code>3/8 * (A + B) + 1/8 * (C + D)</code> in
+            <p>I initially struggled to understand why we use this <code>3/8 * (A + B) + 1/8 * (C + D)</code> in
                 Loop subdivision instead of simply averaging the midpoints of triangle edges. I realized that this
                 formula is central to Loop subdivision, aiming to increase mesh smoothness while preserving detail. This
                 approach avoids sharp edges or unnatural shapes that might result from simpler vertex addition.</p>
@@ -516,7 +527,7 @@
                 further enhance mesh smoothness. That's why we use the formula for new vertex positions.</p>
             <img src="../hw2_IMGs/Task6_LoopSubdivision.png" alt="Loop Subdivision">
 
-            <p>Before implementing Task 6, I reviewed the formula
+            <p>Before implementing Task 6, I reviewed this
                 <code>(1 - n * u) * original_position + u * original_neighbor_position_sum</code>. It's crucial for
                 adjusting the positions of old vertices based on their neighboring vertices, which helps in maintaining
                 the geometric features while smoothing the mesh. The weight <strong>u</strong> depends on the vertex
@@ -526,20 +537,60 @@
 
             <h2>Implementation Steps</h2>
             <ol>
-                <li><strong>Vertex Position Calculation:</strong> Calculate new positions for all vertices using the
+                <li><strong>Reset isNew:</strong> Reset the state of vertices and edges before each
+                    subdivision round, preparing the mesh for subsequent iterations.</li>
+                <li><strong>Old Vertex Position Calculation:</strong> Calculate new positions for all vertices using the
                     Loop subdivision rule, marking each as an original mesh vertex.</li>
-                <li><strong>Edge Position Update:</strong> Update positions associated with edges and store them.</li>
+                <li><strong>New Vertex Position Calculation:</strong> Update new vertices' positions associated with edges and store them to the edge. <img
+                        src="../hw2_IMGs/Task6_calculateNewVertex.png" alt="Vertex Position Calculation"></li>
+
                 <li><strong>Edge Splitting:</strong> Split every edge, noting which are new and which are from the
                     original mesh. Avoid splitting edges that were just split.</li>
                 <li><strong>Edge Flipping:</strong> Flip any new edge that connects an old and new vertex.</li>
                 <li><strong>Position Update:</strong> Update the mesh with the new vertex positions.</li>
             </ol>
-            <p>By following these steps, I managed to execute the splits and flips correctly, updating the positions as
-                necessary to achieve the desired refined mesh.</p>
+            <p>At the beginning, I actually wasn't able to execute this correctly, so you will see those weird mesh
+                shapes. In simple models, my errors were particularly obvious, such as with a box. However, in more
+                complex shapes like a cow and others, the errors were somewhat obscured by the complexity of the model.
+                So initially, when I tested on the peter.dae file, I thought my code was running correctly.</p>
             <!-- <img src="../hw2_IMGs/Task6_RefinedMesh.png" alt="Refined Mesh"> -->
-            <img src="../hw2_IMGs/LoopSubdivisionGIF.gif" alt="Loop Subdivision Process">
-            <img src="../hw2_IMGs/Task6_RefinedMesh.gif" alt="Loop Subdivision Process">
-            <img src="../hw2_IMGs/Task6_RefinedMesh_cow.gif" alt="Loop Subdivision Process">
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/LoopSubdivisionGIF.gif" alt="Loop Subdivision Process">
+                    <div class="gallery-caption">cube</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task6_RefinedMesh.gif" alt="Loop Subdivision Process">
+                    <div class="gallery-caption">quadball</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/Task6_RefinedMesh_cow.gif" alt="Loop Subdivision Process">
+                    <div class="gallery-caption">cow</div>
+                </div>
+            </div>
+
+
+            <p>However, once I discovered the problem through the cube.dae, I began the debugging process. I first
+                re-checked the calculations of the new and old coordinates to ensure they were correct. Then I started
+                investigating if there was an issue with the creation of new vertices, but that wasn’t the case either.
+                I later found out the error was in the flipping process.</p>
+            <img src="../hw2_IMGs/Task6_flip_issue.png" alt="flip issue">
+            <p>As you can see from the screenshot, the flip didn't execute at all, indicating that the newly created
+                edges did not pass the e->isNew condition. Upon checking my code, I realized that I had never marked my
+                edges as new. So, I returned to my Task 5’s splitEdge function, and this time, after splitting, I marked
+                all newly created edges as new. (Actually, at this step, I accidentally discovered that in Task 5 I
+                hadn't updated a vertex's halfedge relationship correctly, and I fixed it as well. It was then that I
+                deeply understood why the prompt says, “While correct behaviors do not imply correct code, incorrect
+                behaviors do imply incorrect code.”) Eventually, as you can see in the image below, I successfully fixed
+                my function.</p>
+            <img src="../hw2_IMGs/Task6_flipIssue_fixed.png" alt="flip issue fixed">
+            <p>And finally, at the beginning of the function, I updated the mesh state again to ensure that the next
+                subdivision could execute correctly. Now, when testing with the quadBall.dae file, everything runs
+                smoothly. I'm really happy 😁</p>
+            <img src="../hw2_IMGs/Task6_testQuadBall.png" alt="testQuadBall">
+
+
+
 
             <h2>Conclusion</h2>
             <p>Task 6 demonstrates the complexity of 3D mesh upsampling and the effectiveness of the Loop subdivision
