@@ -470,8 +470,9 @@
             <h2>Implementation Steps</h2>
             <ol>
                 <li><strong>Boundary Edge Check:</strong> First, check if the edge is a boundary edge. If so:
-                    <code>return VertexIter()</code>; And for the <strong>Extra Credit</strong> part I basically did the same as the
-                    non boundary part except when reassign relationships, I assign the half edge as following.            
+                    <code>return VertexIter()</code>; And for the <strong>Extra Credit</strong> part I basically did the
+                    same as the
+                    non boundary part except when reassign relationships, I assign the half edge as following.
                     <img src="../hw2_IMGs/Task5_extraCredit.png" alt="Extra credit">
                 </li>
                 <li><strong>Create New Vertex:</strong> Create a new vertex at the midpoint of the edge to be split.
@@ -593,7 +594,7 @@
                 smoothly. I'm really happy 😁</p>
             <img src="../hw2_IMGs/Task6_testQuadBall.png" alt="testQuadBall">
 
-                
+
             <h2>Extra Credit - Support meshes with boundary. </h2>
             <h2>Extra Credit - Implement additional subdivision schemes. </h2>
 
@@ -604,9 +605,84 @@
                 properties, we can achieve a smoother and more detailed mesh.</p>
         </div>
     </section>
+    <section id="extra">
+        <div class="container">
+            <h2 style="text-align: center;">Section III: Potential Extra Credit - Art Competition: Model something
+                Creative!
+            </h2>
+            <h3 style="text-align: center;">Subdivision Observations: A Comparison of Loop and Catmull-Clark
+                Subdivisions
+            </h3>
 
+            <article>
 
+                <p>Since learning about subdivision techniques, I revisited Blender and noticed that the use of
+                    subdivision
+                    modifiers in Blender differs from the Loop subdivision process. Loop subdivision will split each
+                    edge
+                    of a triangle into two and thus creating three new vertices within a triangle. However, in Blender,
+                    whether using simple subdivision or Catmull-Clark subdivision, four new vertices are added.
+                    Apart from one vertex at each edge of a triangle, there is an additional vertex at the center of the
+                    triangle.</p>
+                <p>I prepared a moth model. Due to boolean operations, one of the wings is merely joined to the main
+                    body
+                    without an actual union. Therefore, I anticipated some oddities during subdivision. However, out of
+                    curiosity about the final transformations of the two types of Subdivisions, I also conducted tests
+                    using the
+                    subdivision modifier in Blender. The images below show a low-poly moth and its appearance after a
+                    level
+                    1 subdivision. I have displayed the differences under both framework and render effects.</p>
+                <img src="../hw2_IMGs/SectionIII_blenderTest.png" alt="blenderTest">
+                <p>And here's a gif of blender and a screenshot of the Loop subdivisiona in meshedit program to show a
+                    more clear differences</p>
+                <div class="gallery-container">
+                    <div class="gallery-item">
+                        <img src="../hw2_IMGs/Subdivision.gif" alt="blender">
+                        <div class="gallery-caption">Blender</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../hw2_IMGs/meshedit.gif" alt="meshedits">
+                        <div class="gallery-caption">meshedit</div>
+                    </div>
+                </div>
+                <img src="../hw2_IMGs/SectionIII_loopSubdivision.png" alt="loopSubdivision">
 
+                <div class="card">
+                    <h4>Loop Subdivision</h4>
+                    <ul>
+                        <li>Primarily used for triangulated meshes.</li>
+                        <li>Splits each edge into two halves, adding new vertices at the midpoints.</li>
+                        <li>For each original triangle, the newly formed vertices create four smaller triangles.</li>
+                    </ul>
+
+                    <h4>Catmull-Clark Subdivision</h4>
+                    <ul>
+                        <li>A more versatile method applicable to polygonal meshes, including quadrilaterals.</li>
+                        <li>Adds new vertices at both the midpoints of edges and the centers of faces.</li>
+                        <li>Transforms each original polygon into multiple quadrilaterals with the incorporation of
+                            these new
+                            vertices.</li>
+                    </ul>
+
+                    <h4>Summary</h4>
+                    <ul>
+                        <li>Blender commonly employs Catmull-Clark subdivision due to its smoother results, particularly
+                            for quad-based meshes.</li>
+                        <li>The “Simple” subdivision modifier increases the number of vertices while maintaining the
+                            original shape and topology; while Catmull-Clark subdivision smoothens and refines the mesh by
+                            recalculating vertex positions.</li>
+                        <li>Loop subdivision is efficient for purely triangulated meshes and is often used in real-time
+                            rendering.</li>
+                        <li>Catmull-Clark subdivision is prevalent in 3D modeling and animation, offering smoother
+                            surfaces for
+                            high-quality renders.</li>
+                    </ul>
+                </div>
+            </article>
+            <p>Shader - TBU</p>
+        </div>
+
+    </section>
     <footer>
         <div class="container">
             <p>Computer Graphics Class, 2024</p>
