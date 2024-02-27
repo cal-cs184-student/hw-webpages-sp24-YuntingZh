@@ -558,7 +558,6 @@
                 shapes. In simple models, my errors were particularly obvious, such as with a box. However, in more
                 complex shapes like a cow and others, the errors were somewhat obscured by the complexity of the model.
                 So initially, when I tested on the peter.dae file, I thought my code was running correctly.</p>
-            <!-- <img src="../hw2_IMGs/Task6_RefinedMesh.png" alt="Refined Mesh"> -->
             <div class="gallery-container">
                 <div class="gallery-item">
                     <img src="../hw2_IMGs/LoopSubdivisionGIF.gif" alt="Loop Subdivision Process">
@@ -593,6 +592,55 @@
                 subdivision could execute correctly. Now, when testing with the quadBall.dae file, everything runs
                 smoothly. I'm really happy 😁</p>
             <img src="../hw2_IMGs/Task6_testQuadBall.png" alt="testQuadBall">
+            <h2>Reducing the Smoothing Effect</h2>
+            <p> Loop subdivision tends to smooth out sharp corners and edges in a mesh. You can see that very clearly in
+                a cube model as below:
+                <img src="../hw2_IMGs/Task6_cube.png" alt="cube">
+                This is generally beneficial for creating organic shapes but can be
+                undesirable when sharp features are needed.
+            </p>
+            <div class="card">
+                <h4>Here are some methods that we casn use to reduce the Smoothing Effect</h4>
+                <ul>
+                    <li><strong>Pre-splitting Edges:</strong> One approach to mitigate the smoothing effect on specific
+                        parts of the mesh is to pre-split some edges before applying the Loop subdivision. By doing
+                        this, you add more geometry to areas where you want to preserve detail. The added vertices and
+                        edges provide more control over how the subdivision algorithm affects the shape of the mesh.
+                    </li>
+
+                    <li><strong>Selective Subdivision:</strong> Another method is to apply subdivision selectively,
+                        subdividing only certain parts of the mesh while leaving other areas (like sharp edges or
+                        corners) untouched. This technique requires careful planning and mesh preparation but can yield
+                        results that better preserve the original design intent.</li>
+
+                    <li><strong>Using Creases:</strong> Some subdivision algorithms, including Loop subdivision, allow
+                        for the use of "creases." Creases are a way to specify edges or vertices that should not be
+                        smoothed out during subdivision. By assigning higher crease values to certain edges, you can
+                        maintain their sharpness post-subdivision.</li>
+
+                    <li><strong>Hybrid Approaches:</strong> Often, a combination of these techniques is used. For
+                        instance, you might pre-split certain edges and apply creases to others, depending on the
+                        specific requirements of your model and the desired level of detail or sharpness.</li>
+                </ul>
+            </div>
+            <p>For using Pre-splitting Edges: I need to modify my current code to selectively pre-split certain edges
+                before the subdivision process begins. Therefore, I primarily added
+                twofunctions:<em>calculateSharpness</em> and <em>preSplitEdges</em>.
+            </p> 
+            <p>One is used to calculate the sharpness of an edge by calculating the angle between the normal vectors
+            of two adjacent
+            faces. Another is to pre-split edges by selecting edges based on a sharpness threshold. When testing the
+            model, I set this sharpness to <em>M_PI / 4</em>; and
+            called <em>preSplitEdges(mesh, sharpnessThreshold)</em>before performing loop subdivision in upsample.
+            <code>void MeshResampler::upsample(HalfedgeMesh& mesh) {<br>
+                double sharpnessThreshold = M_PI / 4;<br>
+                preSplitEdges(mesh, sharpnessThreshold);<br>
+                ...<br>}</code>The
+            improvement in preserving sharpness can be seen in the image below: <img
+                src="../hw2_IMGs/Task6_preSplitting.png" alt="preSplitting">
+            </p>
+
+
 
 
             <h2>Extra Credit - Support meshes with boundary. </h2>
@@ -669,7 +717,8 @@
                         <li>Blender commonly employs Catmull-Clark subdivision due to its smoother results, particularly
                             for quad-based meshes.</li>
                         <li>The “Simple” subdivision modifier increases the number of vertices while maintaining the
-                            original shape and topology; while Catmull-Clark subdivision smoothens and refines the mesh by
+                            original shape and topology; while Catmull-Clark subdivision smoothens and refines the mesh
+                            by
                             recalculating vertex positions.</li>
                         <li>Loop subdivision is efficient for purely triangulated meshes and is often used in real-time
                             rendering.</li>
