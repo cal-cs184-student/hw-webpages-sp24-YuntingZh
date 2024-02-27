@@ -425,7 +425,7 @@
                     realized the issue was that the faces of h0_next and h1_next were not set correctly, as evident from
                     the <span style="color: red;">red circle</span> in the image above. As long as I switch the surface,
                     it functions well.😁</li>
-                <img src="../hw2_IMGs/Task4 _success.png" alt="Fixed">
+                <img src="../hw2_IMGs/Task4_success.png" alt="Fixed">
 
             </ol>
 
@@ -624,25 +624,54 @@
                 </ul>
             </div>
             <p>For using Pre-splitting Edges: I need to modify my current code to selectively pre-split certain edges
-                before the subdivision process begins. Therefore, I primarily added
-                twofunctions:<em>calculateSharpness</em> and <em>preSplitEdges</em>.
-            </p> 
+                before the subdivision process begins. Therefore, I primarily added two
+                functions:<em>calculateSharpness</em> and <em>preSplitEdges</em>.
+            </p>
             <p>One is used to calculate the sharpness of an edge by calculating the angle between the normal vectors
-            of two adjacent
-            faces. Another is to pre-split edges by selecting edges based on a sharpness threshold. When testing the
-            model, I set this sharpness to <em>M_PI / 4</em>; and
-            called <em>preSplitEdges(mesh, sharpnessThreshold)</em>before performing loop subdivision in upsample.
-            <code>void MeshResampler::upsample(HalfedgeMesh& mesh) {<br>
+                of two adjacent
+                faces. Another is to pre-split edges by selecting edges based on a sharpness threshold. When testing the
+                model, I set this sharpness to <em>M_PI / 4</em>; and
+                called <em>preSplitEdges(mesh, sharpnessThreshold)</em>before performing loop subdivision in upsample.
+                <code>void MeshResampler::upsample(HalfedgeMesh& mesh) {<br>
                 double sharpnessThreshold = M_PI / 4;<br>
                 preSplitEdges(mesh, sharpnessThreshold);<br>
                 ...<br>}</code>The
-            improvement in preserving sharpness can be seen in the image below: <img
-                src="../hw2_IMGs/Task6_preSplitting.png" alt="preSplitting">
+                improvement in preserving sharpness can be seen in the image below: <img
+                    src="../hw2_IMGs/Task6_preSplitting.png" alt="preSplitting">
             </p>
+            <h2>Asymmetry</h2>
+            <p>Several factors can cause asymmetry:</p>
+            <ul>
+                <li>Initial Topology: If the cube's initial topology is not evenly distributed (in terms of edge
+                    lengths, face sizes, and vertex positions), the subdivision process can amplify these
+                    irregularities, leading to asymmetry.</li>
 
+                <li>Vertex Positioning: The vertices of the initial cube might not be perfectly aligned, or there might
+                    be slight deviations in their positions, which become more pronounced after several iterations of
+                    subdivision.</li>
 
+                <li>Edge Flows: The way edges flow and connect can impact how subdivision algorithms modify the mesh. If
+                    there's an inconsistency in edge flow, it can lead to asymmetrical results.</li>
+            </ul>
+            <p>In the case of our cube, you can refer to the image in the last section. <strong>The asymmetry is due to
+                    an inconsistency in the edge flow. </strong>If I flip two of the edges before upsampling, you can see
+                    now it's a symmetrical mesh. Here are 2 GIFs that show the differences:</p>
 
+            <div class="gallery-container">
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/originalCube.gif" alt="originalCube">
+                    <div class="gallery-caption">original</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="../hw2_IMGs/flipForSymmetry.gif" alt="flipForSymmetry">
 
+                    <div class="gallery-caption">After flipping</div>
+                </div>
+            </div>
+            <p>So my pre-processing basically just ensures that the edges are symmetrically arranged around the
+                vertices. You can see from the GIF above how I ensure edge flows by flipping the edges. Therefore, when
+                performing loop subdivision, the mesh is symmetrical.</p>
+            <img src="../hw2_IMGs/Task6_cubeSymmetry.png" alt="cubeSymmetry">
             <h2>Extra Credit - Support meshes with boundary. </h2>
             <h2>Extra Credit - Implement additional subdivision schemes. </h2>
 
