@@ -45,9 +45,21 @@
         <div class="container">
             <h2 class="section-title">Overview</h2>
             <p>
-                Here's the website link:
-                TBD
+                Here's the website link: <a
+                    href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html"
+                    target="_blank">https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html
+                </a>
+                I gained a lot from this homework 2. It began with an exploration of bezier curves and
+                surfaces, progressing to many operations related to the halfedge, I think this homework is
+                primarily focusing on achieving different smoothing effects.
 
+                The bezier surface can achieve great smoothness, though the teapot lid not connecting properly.
+                Comparing this to the loop subdivision effect on the teapot at the end was
+                particularly intriguing to me. A lot of the concepts covered in this assignment are ones I've previously
+                encountered while using Blender, but without understanding the underlying principles, which I found
+                especially interesting. Also, regarding bezier surfaces, I think they could be converted into geometry
+                in Blender for further simple or catmull-clark subdivision. However, I don't know what's the principles
+                behind this conversion process. It's something I look forward to exploring in the future.
             </p>
 
         </div>
@@ -654,8 +666,9 @@
                     there's an inconsistency in edge flow, it can lead to asymmetrical results.</li>
             </ul>
             <p>In the case of our cube, you can refer to the image in the last section. <strong>The asymmetry is due to
-                    an inconsistency in the edge flow. </strong>If I flip two of the edges before upsampling, you can see
-                    now it's a symmetrical mesh. Here are 2 GIFs that show the differences:</p>
+                    an inconsistency in the edge flow. </strong>If I flip two of the edges before upsampling, you can
+                see
+                now it's a symmetrical mesh. Here are 2 GIFs that show the differences:</p>
 
             <div class="gallery-container">
                 <div class="gallery-item">
@@ -672,8 +685,41 @@
                 vertices. You can see from the GIF above how I ensure edge flows by flipping the edges. Therefore, when
                 performing loop subdivision, the mesh is symmetrical.</p>
             <img src="../hw2_IMGs/Task6_cubeSymmetry.png" alt="cubeSymmetry">
+            <img src="../hw2_IMGs/Task6_quick update.png" alt="cubeSymmetry">
             <h2>Extra Credit - Support meshes with boundary. </h2>
-            <h2>Extra Credit - Implement additional subdivision schemes. </h2>
+            <p>I started with making sure new boundary faces are marked as boundary faces
+                <code>         //FaceIter f2 = newFace();<br>
+                FaceIter f2 = newBoundary(); // Create a new boundary face</code>
+                This actually didn't work for me in the end so I switched back to newFace(); to fix it.
+                <img src="../hw2_IMGs/Task6_extraCredit_Debug.png" alt="bug">
+                and this is how I calculate old vertex pos if it's a boundary vertex based on:
+            <p>
+                V<sub>new</sub> =
+                <span style="font-style: italic;">&frac34;</span> V +
+                <span style="font-style: italic;">&frac18;</span> V<sub>prev</sub> +
+                <span style="font-style: italic;">&frac18;</span> V<sub>next</sub>
+            </p>
+            <code>if (isBoundaryVertex) {<br>
+                    // Apply boundary vertex rule<br>
+                    Vector3D vPrev = v->halfedge()->next()->next()->vertex()->position;<br>
+                    Vector3D vNext = v->halfedge()->twin()->next()->vertex()->position;<br>
+                    v->newPosition = 0.75 * v->position + 0.125 * (vPrev + vNext);<br>
+                } </code>
+            If i change this equation it gaves me interesting look🤣like this:
+            <img src="../hw2_IMGs/Task6_crazy.png" alt="crazy car">
+            And this is how I calculate new vertex pos:
+            <code>
+                    if (e->isBoundary()) {<br>
+                        e->newPosition = 0.5 * (A + B);<br>
+                    }
+                </code>
+            After I fixed anything that I can think of, I got this smooth edges:
+            <img src="../hw2_IMGs/Task6_extraCredit_Fix.png" alt="fix">
+            </p>
+
+
+
+            <!-- <h2>Extra Credit - Implement additional subdivision schemes. </h2> -->
 
 
             <h2>Conclusion</h2>
