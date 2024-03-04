@@ -1,7 +1,398 @@
 <html>
-	<head>
-	</head>
-	<body>
-		Homework 3 index.html here
-	</body>
+
+<head>
+	<title>Computer Graphics Homework 3 Report</title>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<div id="branding">
+				<h1>Computer Graphics Homework 3 Report</h1>
+			</div>
+			<nav class="horizontal-nav">
+				<div class="section-nav">
+					<h2>Part 1: Ray Generation and Scene Intersection</h2>
+					<ul>
+						<li><a href="#task1">Task 1</a></li>
+						<li><a href="#task2">Task 2</a></li>
+						<li><a href="#task3">Task 3</a></li>
+						<li><a href="#task4">Task 4</a></li>
+					</ul>
+				</div>
+				<div class="section-nav">
+					<h2>Part 2: Bounding Volume Hierarchy</h2>
+					<ul>
+						<li><a href="#p2task1">Task 1</a></li>
+						<li><a href="#p2task2">Task 2</a></li>
+						<li><a href="#p2task3">Task 3</a></li>
+						<li><a href="#p2task4">Task 4</a></li>
+					</ul>
+				</div>
+				<div class="section-nav">
+					<h2>Part 3: Direct Illumination</h2>
+					<ul>
+						<li><a href="#p3task1">Task 1</a></li>
+						<li><a href="#p3task2">Task 2</a></li>
+						<li><a href="#p3task3">Task 3</a></li>
+						<li><a href="#p3task4">Task 4</a></li>
+					</ul>
+				</div>
+				<div class="section-nav">
+					<h2>Part 4: Global Illumination</h2>
+					<ul>
+						<li><a href="#p4task1">Task 1</a></li>
+						<li><a href="#p4task2">Task 2</a></li>
+						<li><a href="#p4task3">Task 3</a></li>
+					</ul>
+				</div>
+				<div class="section-nav">
+					<h2>Part 5: Adaptive Sampling</h2>
+					<ul>
+						<li><a href="#p5task1">Task 1</a></li>
+						<li><a href="#extra">Extra Credit</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</header>
+
+	<section id="overview">
+		<div class="container">
+			<h2 class="section-title">Overview</h2>
+			<p>
+				Here's the website link: <a
+					href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html"
+					target="_blank">https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html
+				</a>
+			</p>
+
+		</div>
+		<!-- <div class="container">
+			<h1>Computer Graphics Homework 3 To-Do List</h1>
+			
+			<h2>Part 1: Ray Generation and Scene Intersection</h2>
+			<ul class="task-list">
+				<li><a href="#task1">Task 1: Generating Camera Rays</a></li>
+				<li><a href="#task2">Task 2: Generating Pixel Samples</a></li>
+				<li><a href="#task3">Task 3: Ray-Triangle Intersection</a></li>
+				<li><a href="#task4">Task 4: Ray-Sphere Intersection</a></li>
+			</ul>
+	
+			<h2>Part 2: Bounding Volume Hierarchy</h2>
+			<ul class="task-list">
+				<li><a href="#p2task1">Task 1: Timing Experiment</a></li>
+				<li><a href="#p2task2">Task 2: Constructing the BVH</a></li>
+				<li><a href="#p2task3">Task 3: Intersecting the Bounding Box</a></li>
+				<li><a href="#p2task4">Task 4: Intersecting the BVH</a></li>
+			</ul>
+	
+			<h2>Part 3: Direct Illumination</h2>
+			<ul class="task-list">
+				<li><a href="#p3task1">Task 1: Diffuse BSDF</a></li>
+				<li><a href="#p3task2">Task 2: Zero-bounce Illumination</a></li>
+				<li><a href="#p3task3">Task 3: Direct Lighting with Uniform Hemisphere Sampling</a></li>
+				<li><a href="#p3task4">Task 4: Direct Lighting by Importance Sampling Lights</a></li>
+			</ul>
+	
+			<h2>Part 4: Global Illumination</h2>
+			<ul class="task-list">
+				<li><a href="#p4task1">Task 1: Sampling with Diffuse BSDF</a></li>
+				<li><a href="#p4task2">Task 2: Global Illumination with up to N Bounces of Light</a></li>
+				<li><a href="#p4task3">Task 3: Global Illumination with Russian Roulette</a></li>
+			</ul>
+	
+			<h2>Part 5: Adaptive Sampling</h2>
+			<ul class="task-list">
+				<li><a href="#p5task1">Task 1: [Title for Task 1]</a></li>
+				<li><a href="#extra">Extra Credit</a></li>
+			</ul>
+		</div>
+	</section> -->
+		<!-- Part 1 -->
+		<section id="Part1">
+			<div class="container">
+				<h2 style="text-align: center;">Part 1: Ray Generation and Scene Intersection</h2>
+				<section id="introduction">
+					<div class="container">
+						<h2>Introduction</h2>
+						<p>The rendering pipeline in a ray tracer is a complex process involving several steps, from
+							generating rays to calculating the color of pixels based on interactions with objects in the
+							scene. This report will focus on two critical components of this pipeline: ray generation
+							and primitive intersection, with a specific focus on triangle intersection.</p>
+					</div>
+				</section>
+
+				<section id="ray-generation">
+					<div class="container">
+						<h2>Ray Generation</h2>
+						<p>Ray generation is the first step in the rendering pipeline. The process begins with the
+							camera, which acts as the eye of the viewer. For each pixel on the image plane, a ray is
+							generated and projected into the scene. These rays are defined by an origin (the camera's
+							position in the world) and a direction vector. The direction vector is calculated to pass
+							through each pixel on the image plane, ensuring that every part of the scene visible from
+							the camera is sampled.</p>
+						<p>The generation of rays is influenced by the camera's field of view, aspect ratio, and the
+							position of the image plane. The rays are then used to find intersections with objects in
+							the scene, determining what the camera sees at each pixel.</p>
+					</div>
+				</section>
+
+				<section id="triangle-intersection">
+					<div class="container">
+						<h2>Triangle Intersection</h2>
+						<p>The triangle intersection algorithm is a crucial part of determining how rays interact with
+							objects composed of triangular meshes. The implemented algorithm is based on the
+							Moller-Trumbore intersection algorithm, a fast and efficient method.</p>
+						<h3>Algorithm Explanation</h3>
+						<ul>
+							<li>Edge Vectors and Normal Calculation: I start by calculating two edge vectors of the
+								triangle, using its three vertices. The cross product of these vectors gives us a normal
+								vector to the plane in which the triangle lies.</li>
+							<li>Determining Intersection with Plane: I then find if the ray intersects this plane by
+								checking if the ray direction and the normal to the plane are perpendicular. If they
+								are, there is no intersection.</li>
+							<li>Barycentric Coordinates: If an intersection is found, I use barycentric coordinates to
+								determine if the intersection point lies within the boundaries of the triangle. This
+								involves solving a set of linear equations to find the barycentric coordinates, which
+								indicate the weight each vertex contributes to the intersection point.</li>
+							<li>Intersection Point and Normal: Once I confirm the ray intersects within the triangle,
+								the exact point of intersection is computed. The normal at this point is found by
+								interpolating the normals of the triangle's vertices, weighted by the barycentric
+								coordinates.</li>
+							<li>Range Check: Finally, I check if the intersection point lies within the valid range of
+								the ray (between min_t and max_t). If it does, the ray is updated with the intersection
+								details.</li>
+						</ul>
+					</div>
+				</section>
+
+				<section id="results-and-images">
+					<div class="container">
+						<h2>Results and Images</h2>
+						<p>Implementing this ray-triangle intersection method allows for accurate rendering of scenes
+							composed of triangular meshes. Below are some rendered images from small .dae files using
+							normal shading to illustrate the effectiveness of the implemented methods.</p>
+						<!-- Insert images here. Make sure to use proper <img> tags and provide alt text for accessibility. -->
+					</div>
+					<div class="gallery-container">
+						<div class="gallery-item">
+							<img class="uniform-pictures" src="../hw3_IMGs/Part1_Task4_CBempty.png" alt="CBempty">
+							<div class="gallery-caption">CBempty</div>
+						</div>
+						<div class="gallery-item">
+							<img class="uniform-pictures" src="../hw3_IMGs/Part1_Task5_CBspheres.png" alt="CBspheres">
+							<div class="gallery-caption">CBspheres</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="conclusion">
+					<div class="container">
+						<h2>Conclusion</h2>
+						<p>The ray generation and triangle intersection processes are fundamental to the functionality
+							of a ray tracer. The implemented triangle intersection algorithm, based on the
+							Moller-Trumbore method, is both efficient and effective, allowing for the accurate rendering
+							of complex scenes composed of triangular meshes. The resulting images demonstrate the
+							capability of the ray tracer to handle various geometries and lighting conditions, producing
+							visually appealing and realistic renderings.</p>
+					</div>
+				</section>
+
+
+			</div>
+			<!-- Part 1 : Task 1-->
+			<section id="task1">
+				<div class="container">
+					<h2 class="section-title">Task 1: Generating Camera Rays</h2>
+
+					<p>
+						<img src="../hw3_IMGs/Part1_Task12.png" alt="Task12">
+
+					</p>
+				</div>
+			</section>
+			<!-- Part 1 : Task 2-->
+			<section id="task2">
+				<div class="container">
+					<h2 class="section-title">Task 2: Generating Pixel Samples</h2>
+
+					<p>
+						...
+					</p>
+				</div>
+			</section>
+			<!-- Part 1 : Task 3-->
+			<section id="task3">
+				<div class="container">
+					<h2 class="section-title">Task 3: Ray-Triangle Intersection</h2>
+
+					<p>
+						...
+					</p>
+				</div>
+			</section>
+			<!-- Part 1 : Task 4-->
+			<section id="task4">
+				<div class="container">
+					<h2 class="section-title">Task 4: Ray-Sphere Intersection</h2>
+
+					<p>
+						...
+					</p>
+				</div>
+			</section>
+
+		</section>
+		<!-- Part 2 -->
+		<section id="Part2">
+			<div class="container">
+				<h2 style="text-align: center;">Part 2: Bounding Volume Hierarchy</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+
+			</div>
+			<!-- Part 2 : Task 1-->
+			<section id="p2task1">
+				<div class="container">
+					<h2 class="section-title">Task 1: Timing Experiment</h2>
+
+					<p>
+						...
+					</p>
+
+			</section>
+			<!-- Part 2 : Task 2-->
+			<section id="p2task2">
+				<div class="container">
+					<h2 class="section-title">Task 2: Constructing the BVH</h2>
+
+					<p>
+						...
+					</p>
+
+			</section>
+			<!-- Part 2 : Task 3-->
+			<section id="p2task3">
+				<div class="container">
+					<h2 class="section-title">Task 3: Intersecting the Bounding Box</h2>
+
+					<p>
+						...
+					</p>
+
+			</section>
+			<!-- Part 2 : Task 4-->
+			<section id="p2task4">
+				<div class="container">
+					<h2 class="section-title">Task 4: Intersecting the BVH</h2>
+
+					<p>
+						...
+					</p>
+
+			</section>
+		</section>
+		<!-- Part 3 -->
+		<section id="Part3">
+			<div class="container">
+				<h2 style="text-align: center;">Part 3: Direct Illumination</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+			</div>
+			<!-- Part 3 : Task 1-->
+			<section id="p3task1">
+				<div class="container">
+					<h2 class="section-title">Task 1: Diffuse BSDF</h2>
+					<p>
+						...
+					</p>
+			</section>
+			<!-- Part 3 : Task 2-->
+			<section id="p3task2">
+				<div class="container">
+					<h2 class="section-title">Task 2: Zero-bounce Illumination</h2>
+					<p>
+						...
+					</p>
+			</section>
+			<!-- Part 3 : Task 3-->
+			<section id="p3task3">
+				<div class="container">
+					<h2 class="section-title">Task 3: Direct Lighting with Uniform Hemisphere Sampling</h2>
+					<p>
+						...
+					</p>
+			</section>
+			<!-- Part 3 : Task 4-->
+			<section id="p3task4">
+				<div class="container">
+					<h2 class="section-title">Task 4: Direct Lighting by Importance Sampling Lights</h2>
+					<p>
+						...
+					</p>
+			</section>
+		</section>
+
+		<!-- Part 4 -->
+		<section id="Part4">
+			<div class="container">
+				<h2 style="text-align: center;">Part 4: Global Illumination</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+			</div>
+			<!-- Part 4 : Task 1-->
+			<section id="p4task1">
+				<div class="container">
+					<h2 class="section-title">Task 1: Sampling with Diffuse BSDF</h2>
+					<p>
+						...
+					</p>
+			</section>
+			<!-- Part 4 : Task 2-->
+			<section id="p4task2">
+				<div class="container">
+					<h2 class="section-title">Task 2: Global Illumination with up to N Bounces of Light</h2>
+					<p>
+						...
+					</p>
+			</section>
+			<!-- Part 4 : Task 3-->
+			<section id="p4task3">
+				<div class="container">
+					<h2 class="section-title">Task 3: Global Illumination with Russian Roulette</h2>
+					<p>
+						...
+					</p>
+			</section>
+		</section>
+
+		<!-- Part 5 -->
+		<section id="Part5">
+			<div class="container">
+				<h2 style="text-align: center;">Part 5: Adaptive Sampling</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+			</div>
+			<!-- Part 5 : Task 1-->
+			<section id="p5task1">
+				<div class="container">
+					<h2 class="section-title">Task 1: [Title for Task 1]</h2>
+					<p>
+						...
+					</p>
+			</section>
+		</section>
+
+</body>
+
 </html>

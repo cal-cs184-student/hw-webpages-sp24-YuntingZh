@@ -35,6 +35,34 @@
                     href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw1/index.html"
                     target="_blank">https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw1/index.html</a>
             </p>
+            <p>Personal note - basic setup:
+                Install Vcpkg
+                Open a PowerShell / CMD / Git Bash in the folder：..\Documents\CS284A
+                Vcpkg is a package management software that downloads and builds the required software dependencies
+                -> git clone https://github.com/microsoft/vcpkg
+                -> cd vcpkg
+                -> .\bootstrap-vcpkg.bat
+                After vcpkg is installed, install the dependency of this project
+                On 64-bit system (most systems today)
+                ->.\vcpkg.exe install freetype:x64-windows
+                <!--vcpkg package management program version 2024-01-11-710a3116bbd615864eef5f9010af178034cb9b44-->
+                ----
+                Go to visual studio installer - Modify- Look for "Desktop development with C++
+                (For CMake support, make sure the "C++ CMake tools for Windows" and any other relevant CMake components
+                are selected.)
+                - CMakeLists.txt, and then click "CMake Settings for Assignment1" no opt for Assignment1
+                - CMake toolchain file： ..\buildsystems\vcpkg.cmake
+                <!-- C:\Users\Magiccc\Documents\CS284A\vcpkg\scripts\buildsystems\vcpkg.cmake -->
+                <!--我遇到一个问题就是我的build里没有build all 选项，原因在我的CMake setting里左侧configurations里不光有x64-Release，还加了一个x64-Debug，删除之后就能正常的build all了：）-->
+                - Build all
+                - Set youwillknow.cpp as Startup Item
+                - Run the Project: To run the project, you can press F5 or go to Debug > Start Debugging. This will
+                start the application with the debugger attached.
+                If you want to run the project without the debugger, you can press Ctrl + F5 or go to Debug > Start
+                Without Debugging.
+                (got error message when set the wrong main file - unable to start program
+                C:\Users\..\hw0\build\x64-Release\CGL\src\CGL.lib s not a valid Win32 application)
+            </p>
 
         </div>
     </section>
@@ -473,12 +501,12 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
                 //return Color(1, 0, 1);
                 }
                     </code></pre>
-                    <div class="image-task6">
-          
+            <div class="image-task6">
+
                 <img class="uniform-pictures" src="../images/Task5_billinear.png" alt="Task 4 code">
                 <img class="uniform-pictures" src="../images/Task5_nearst.png" alt="Task 4 code">
-     
-        </div>
+
+            </div>
 
         </div>
 
@@ -574,8 +602,8 @@ bool RasterizerImp::isPointInTriangle(float x, float y, float x0, float y0, floa
                         }
                         }
                 </code></pre>
-            <p>I implement get_level function accroding to slides:</p> <img class="uniform-pictures" src="../images/Task6_ppt.png"
-                alt="Task 6 classnote">
+            <p>I implement get_level function accroding to slides:</p> <img class="uniform-pictures"
+                src="../images/Task6_ppt.png" alt="Task 6 classnote">
             <pre><code>             
 
                 float Texture::get_level(const SampleParams& sp) {
