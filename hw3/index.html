@@ -255,10 +255,12 @@
 					I’m working with. From there, I split them up to make smaller and smaller boxes, kind of like making
 					a bunch of Russian nesting dolls, until each little box has a manageable number of primitives in it.
 					The trickiest part is deciding where to split. I went for a heuristic based on the axis with the
-					most spread—imagine it like looking for the widest part of a watermelon to slice first. This way, I aim
+					most spread—imagine it like looking for the widest part of a watermelon to slice first. This way, I
+					aim
 					to balance the number of primitives on each side, which should, theoretically, make the rendering
 					not just faster, but also efficient.<br>
-					I’ve got some before and after shots of models with normal shading it was like “Wow, that was quick!” With the BVH.
+					I’ve got some before and after shots of models with normal shading it was like “Wow, that was
+					quick!” With the BVH.
 				</p>
 
 			</div>
@@ -309,7 +311,7 @@
 				<h2 style="text-align: center;">Part 3: Direct Illumination</h2>
 				<h3 style="text-align: center;">Overview</h3>
 				<p>
-					...
+					BSDF is such a common note I used a lot in blender. I am super excited to learn more about it
 				</p>
 			</div>
 			<!-- Part 3 : Task 1-->
@@ -317,7 +319,21 @@
 				<div class="container">
 					<h2 class="section-title">Task 1: Diffuse BSDF</h2>
 					<p>
-						...
+					<h4>Understanding BSDF</h4><br>
+					BSDF (Bidirectional Scattering Distribution Function): This function is crucial in rendering as
+					it defines how light is reflected and transmitted at surfaces. It's a more general concept than
+					BRDF (Bidirectional Reflectance Distribution Function) because it includes light transmission in
+					addition to reflection.
+					Diffuse BSDF: In real life, a perfectly diffuse (or Lambertian) surface scatters incoming light
+					uniformly in all directions. In this task, I'll focus on this type of material.<br>
+					In a perfectly diffuse (Lambertian) material, the reflectance is constant and only depends on the
+					material's albedo, not on the light or view direction. The albedo is stored in the reflectance
+					attribute of the DiffuseBSDF class. This reflectance is represented as a Vector3D to handle the RGB
+					components of light. The function DiffuseBSDF::f returns the material's reflectance (reflectance)
+					divided by PI. This division by PI is a characteristic of the Lambertian reflection model, which
+					assumes that the surface reflects light uniformly in all directions in the hemisphere.<br> For the
+					DiffuseBSDF::sample_f function, I'm supposed to sample a new direction for the incoming light wi.
+					<strong>I wanted to use a hemisphere sampling technique here.</strong>
 					</p>
 			</section>
 			<!-- Part 3 : Task 2-->
@@ -325,7 +341,22 @@
 				<div class="container">
 					<h2 class="section-title">Task 2: Zero-bounce Illumination</h2>
 					<p>
-						...
+
+						For Tak2 I need to implement the zero_bounce_radiance function in the PathTracer class. This
+						function should return the emission of the light source that the ray directly hits, without any
+						bounces. <br>
+
+						First, I need to check if the ray intersects with an object in the scene. If there is no
+						intersection, then there is no zero-bounce radiance to compute, and the function should return
+						Vector3D(0, 0, 0) (representing no light).<br>
+
+						If there is an intersection, I need to check if the intersected object is a light source. This
+						is typically done by checking if the BSDF of the intersected material is emissive. In the
+						provided code, BSDF objects have a get_emission() function that returns the emissive spectrum of
+						the material.<br>
+
+						If the intersected material is emissive, I should return its emission. Otherwise, return
+						Vector3D(0, 0, 0).<br>
 					</p>
 			</section>
 			<!-- Part 3 : Task 3-->
