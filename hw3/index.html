@@ -251,7 +251,14 @@
 				<h2 style="text-align: center;">Part 2: Bounding Volume Hierarchy</h2>
 				<h3 style="text-align: center;">Overview</h3>
 				<p>
-					...
+					When constructing the BVH, I start by figuring out the big box that wraps around all the primitives
+					I’m working with. From there, I split them up to make smaller and smaller boxes, kind of like making
+					a bunch of Russian nesting dolls, until each little box has a manageable number of primitives in it.
+					The trickiest part is deciding where to split. I went for a heuristic based on the axis with the
+					most spread—imagine it like looking for the widest part of a watermelon to slice first. This way, I aim
+					to balance the number of primitives on each side, which should, theoretically, make the rendering
+					not just faster, but also efficient.<br>
+					I’ve got some before and after shots of models with normal shading it was like “Wow, that was quick!” With the BVH.
 				</p>
 
 			</div>
