@@ -53,17 +53,21 @@
 				<p>
 					<strong>What I did in Part 2:</strong>
 					<br>
-					<strong>Reset Forces:</strong><br> Calculated the total external force on each point mass using external_accelerations
+					<strong>Reset Forces:</strong><br> Calculated the total external force on each point mass using
+					external_accelerations
 					and the mass of the point mass, applying Newton's Second Law (F = ma) for external forces.
 					<br>
-					<strong>Spring Correction Forces:</strong><br> Implemented these by verifying if the spring's constraint type is enabled
+					<strong>Spring Correction Forces:</strong><br> Implemented these by verifying if the spring's
+					constraint type is enabled
 					and then calculating the forces based on Hooke’s Law (F = -kx).<code>Vector3D force =
 					ab.unit() * cp->ks * (current_length - spring.rest_length);</code>
 					<br>
-					<strong>Verlet Integration for Position Computation:</strong><br> Computed the new position of each point mass using
+					<strong>Verlet Integration for Position Computation:</strong><br> Computed the new position of each
+					point mass using
 					Verlet integration and included a damping coefficient.
 					<br>
-					<strong>Adjusting Positions for Spring Length Constraints:</strong><br> Modified the positions of the point masses
+					<strong>Adjusting Positions for Spring Length Constraints:</strong><br> Modified the positions of
+					the point masses
 					associated with each spring to ensure the length does not exceed 110% of its rest length, skipping
 					over any pinned point masses.
 					<br>
@@ -108,53 +112,160 @@
 				<h2 style="text-align: center;">Part 3: Handling collisions with other objects</h2>
 
 				<p>
-					In Part 3, I implemented collision handling for two primitives in the cloth simulation: spheres and planes. This enhancement adds a more dynamic and realistic behavior, allowing the cloth to interact naturally with these objects.
+					In Part 3, I implemented collision handling for two primitives in the cloth simulation: spheres and
+					planes. This enhancement adds a more dynamic and realistic behavior, allowing the cloth to interact
+					naturally with these objects.
 				</p>
 				<h3>3.1: Handling collisions with spheres</h3>
-				<p>	
-					The first task was to tackle collisions between the cloth and spherical objects. The approach was straightforward yet effective:
-					<ul>
-						<li><strong>Collision Detection</strong>: I calculated the distance from each PointMass to the center of a sphere to detect collisions.</li>
-						<li><strong>Intersection Point</strong>: I calculated the intersection point on the sphere's surface for each colliding PointMass.</li>
-						<li><strong>Correction Vector</strong>: This vector adjusted the PointMass's position to the sphere's surface.</li>
-						<li><strong>Friction Adjustment</strong>: I incorporated friction into the correction, enhancing realism.</li>
-					</ul>
-					<img src="../hw4_IMGs/hw4_p3_sphere.png" alt="sphere">
+				<p>
+					The first task was to tackle collisions between the cloth and spherical objects. The approach was
+					straightforward yet effective:
+				<ul>
+					<li><strong>Collision Detection</strong>: I calculated the distance from each PointMass to the
+						center of a sphere to detect collisions.</li>
+					<li><strong>Intersection Point</strong>: I calculated the intersection point on the sphere's surface
+						for each colliding PointMass.</li>
+					<li><strong>Correction Vector</strong>: This vector adjusted the PointMass's position to the
+						sphere's surface.</li>
+					<li><strong>Friction Adjustment</strong>: I incorporated friction into the correction, enhancing
+						realism.</li>
+				</ul>
+				<img src="../hw4_IMGs/hw4_p3_sphere.png" alt="sphere">
 				</p>
 				<p>
-					Above are images of cloth with varying ks as they collide with the sphere. As ks increases, the cloth becomes stiffer.
-				</p>				
+					Above are images of cloth with varying ks as they collide with the sphere. As ks increases, the
+					cloth becomes stiffer.
+				</p>
 				<h3>3.2: Handling collisions with planes</h3>
-			
+
 				<p>
 					Next, I focused on plane collisions:
-					<ul>
-						<li><strong>Collision Detection</strong>: Check if a PointMass crossed the plane since the last step.</li>
-						<li><strong>Intersection Point</strong>: Compute the intersection point for each PointMass that crossed the plane.</li>
-						<li><strong>Correction Vector</strong>: Adjust the correction vector with a small offset to avoid sticking to the plane.</li>
-						<li><strong>Friction Adjustment</strong>: Friction was applied to the correction vector for realism.</li>
-					</ul>
-					<img src="../hw4_IMGs/hw4_p3_plane.png" alt="plane">
+				<ul>
+					<li><strong>Collision Detection</strong>: Check if a PointMass crossed the plane since the last
+						step.</li>
+					<li><strong>Intersection Point</strong>: Compute the intersection point for each PointMass that
+						crossed the plane.</li>
+					<li><strong>Correction Vector</strong>: Adjust the correction vector with a small offset to avoid
+						sticking to the plane.</li>
+					<li><strong>Friction Adjustment</strong>: Friction was applied to the correction vector for realism.
+					</li>
+				</ul>
+				<img src="../hw4_IMGs/hw4_p3_plane.png" alt="plane">
 				</p>
 				<p>
-					Integrating these methods into the Cloth::simulate function ensured realistic interactions between the cloth and other objects. The cloth now appropriately drapes over spheres and reacts to planes in the environment.
+					Integrating these methods into the Cloth::simulate function ensured realistic interactions between
+					the cloth and other objects. The cloth now appropriately drapes over spheres and reacts to planes in
+					the environment.
 				</p>
-		
-		
 			</div>
-			
 		</section>
 
 		<!-- Part 4 -->
 		<section id="Part4">
 			<div class="container">
 				<h2 style="text-align: center;">Part 4: Handling self-collisions</h2>
-				<h3 style="text-align: center;">Overview</h3>
 				<p>
-					...
+					In Part 4, I implemented self-collisions utilizing spatial hashing. Spatial hashing is notably advantageous as it ensures constant time complexity (O(1)) for locating objects on the screen, irrespective of the scale of the world rendered. Although most modern game engines restrict direct internal construction of objects, learning this technique is still beneficial. The method is particularly efficient because hash mapping accurately calculates the value of the target position from a specified key, enhancing both precision and performance in complex simulations.
 				</p>
-			</div>
+				
+				<h2>4.1. Implement Cloth::hash_position</h2>
+				<p>
+					The purpose of this function is to map each point mass's position to a specific 3D box.
+					This aids in generating a unique key to minimize hash collisions. Several methods were explored:
+				<ul>
+					<li><strong>Simple Linear Combination:</strong> A straightforward method using linear combinations
+						of coordinates with prime numbers.
+						<code>float hash = prime1 * truncatedX + prime2 * truncatedY + prime3 * truncatedZ;</code>
+					</li>
+
+					<li><strong>Cantor Pairing Function:</strong> A mathematically robust approach that uniquely encodes
+						two natural numbers into a single natural number. For three dimensions, this method pairs two
+						coordinates and then pairs the result with the third.
+						<!-- <pre>
+			float cantorPair(float k1, float k2) {
+				return 0.5 * (k1 + k2) * (k1 + k2 + 1) + k2;
+			}
 			
+			float uniqueCombination(float x, float y, float z) {
+				float pairXY = cantorPair(x, y);
+				return cantorPair(pairXY, z);
+			}
+						</pre> -->
+					</li>
+
+					<li><strong>Base Conversion Method:</strong> This technique involves a base conversion to ensure
+						uniqueness.
+						<code>x + (y * base) + (z * base * base);</code> Here, 'base' would typically be the maximum of
+						num_width_points, num_height_points, and num_depth_points.
+					</li>
+				</ul>
+				The chosen method for the current implementation was the Simple Linear Combination due to its ease of
+				implementation and efficiency.
+				</p>
+
+				<h2>4.2. Develop Cloth::build_spatial_map</h2>
+				<p>
+					The build_spatial_map function is responsible for creating a spatial map of point masses.
+					Each point mass is categorized based on its hashed position. This map is pivotal for efficient
+					collision
+					detection in the cloth simulation.
+				</p>
+
+				<h2>4.3. Code Cloth::self_collide</h2>
+				<p>
+					The self_collide function is designed to detect and resolve collisions between point masses within
+					the same
+					hashed space. The implementation involves looping through all point masses. For each point mass, the
+					spatial
+					hash is used to find nearby points. A collision check is then conducted to determine if any nearby
+					point masses
+					are within a specified threshold distance. If a collision is detected, it is resolved by computing a
+					correction vector, which is then used to update the position of the point masses involved. An
+					important
+					aspect of this function is ensuring that a point mass does not collide with itself.
+				</p>
+				<h2>Self-Collision Progression</h2>
+				<p>
+					The following screenshots document the progression of the cloth simulation as it falls and folds
+					onto itself.
+				</p>
+
+				<h3>Self-Collision 1: density = 1, ks = 1000</h3>
+				<img src="../hw4_IMGs/hw4_p4_density_1_ks_1000.png" alt="hw4_p4_density_1_ks_1000">
+				<p>
+					At a density of 1 and ks (spring constant) of 1000, the initial self-collision showcases the cloth's
+					lightweight properties. It starts to interact with itself in a very subtle and gentle manner. The
+					low density results in the cloth exhibiting minimal gravitational pull, causing it to fall slowly
+					and gracefully. The folds created are delicate and barely noticeable, reflecting the cloth's
+					lightweight and soft texture.
+				</p>
+
+				<h3>Self-Collision 2: density = 15, ks = 5000</h3>
+				<img src="../hw4_IMGs/hw4_p4_density_15_ks_5000.png" alt="hw4_p4_density_15_ks_5000">
+				<p>
+					With the density increased to 15 and ks adjusted to 5000, the cloth’s behavior during mid-fall
+					becomes more pronounced. The higher density leads to a faster and more dynamic interaction with
+					itself, resulting in more complex and defined folding patterns. The increased ks value contributes
+					to a stiffer cloth structure, so the folds appear more rigid and less fluid compared to the initial
+					state. The cloth starts showing signs of realistic draping and collision with its own layers.
+				</p>
+
+				<h3>Self-Collision 3: density = 30, ks = 7500</h3>
+				<img src="../hw4_IMGs/hw4_p4_density_30_ks_7500.png" alt="hw4_p4_density_30_ks_7500">
+				<p>
+					At the highest density of 30 and ks of 7500, the cloth reaches a more restful state, although it
+					remains slightly bouncy due to the substantial ks value. The increased density causes the cloth to
+					fall quickly, leading to more dynamic and complex self-collisions. The high ks contributes to the
+					cloth's ability to maintain its shape under stress, resulting in more pronounced and defined folds.
+					Despite reaching a restful state, the cloth retains a level of bounciness and resistance, indicative
+					of its thick and robust texture.
+				</p>
+				<p>
+					Here is a GIF for better view:
+				</p>
+				<img src="../hw4_IMGs/hw4_compare.gif" alt="hw4_compare.gif">
+			</div>
+
 		</section>
 
 		<!-- Part 5 -->

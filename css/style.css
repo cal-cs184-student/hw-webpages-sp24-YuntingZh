@@ -296,3 +296,10 @@ body, html {
     position: relative;
     z-index: 10; /* Higher than the slideshow */
 }
+img {
+    max-width: 80%; /* Adjust to make images smaller */
+    height: auto;
+    display: block;
+    margin-left: auto; /* Center image horizontally */
+    margin-right: auto;
+}
