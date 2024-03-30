@@ -1,9 +1,143 @@
 <html>
-	<head>
-		<title>Computer Graphics Homework 4 Report</title>
-		<link rel="stylesheet" type="text/css" href="../css/style.css">
-	</head>
-	<body>
-		Homework 4 index.html here
-	</body>
+
+<head>
+	<title>Computer Graphics Homework 4 Report</title>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body>
+	<header>
+		<div class="container">
+			<div id="branding">
+				<h1>Computer Graphics Homework 3 Report</h1>
+			</div>
+			<nav class="horizontal-nav">
+				<ul>
+					<li class="current"><a href="#overview">Overview</a></li>
+					<li><a href="#Part1">Part 1</a></li>
+					<li><a href="#Part2">Part 2</a></li>
+					<li><a href="#Part3">Part 3</a></li>
+					<li><a href="#Part4">Part 4</a></li>
+					<li><a href="#Part5">Part 5</a></li>
+					<li><a href="#extra">Extra Credit</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<section id="overview">
+		<div class="container">
+			<h2 class="section-title">Overview</h2>
+			<p>
+				...overview: <a href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html"
+					target="_blank">https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html
+				</a>
+			</p>
+
+		</div>
+		<!-- Part 1 -->
+		<section id="Part1">
+			<div class="container">
+				<h2 style="text-align: center;">Part 1: Masses and springs</h2>
+				<p>
+				</p>
+			</div>
+
+
+		</section>
+		<!-- Part 2 -->
+		<section id="Part2">
+			<div class="container">
+				<h2 style="text-align: center;">Part 2: Simulation via numerical integration</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					<strong>What I did in Part 2:</strong>
+					<br>
+					<strong>Reset Forces:</strong><br> Calculated the total external force on each point mass using external_accelerations
+					and the mass of the point mass, applying Newton's Second Law (F = ma) for external forces.
+					<br>
+					<strong>Spring Correction Forces:</strong><br> Implemented these by verifying if the spring's constraint type is enabled
+					and then calculating the forces based on Hooke’s Law (F = -kx).<code>Vector3D force =
+					ab.unit() * cp->ks * (current_length - spring.rest_length);</code>
+					<br>
+					<strong>Verlet Integration for Position Computation:</strong><br> Computed the new position of each point mass using
+					Verlet integration and included a damping coefficient.
+					<br>
+					<strong>Adjusting Positions for Spring Length Constraints:</strong><br> Modified the positions of the point masses
+					associated with each spring to ensure the length does not exceed 110% of its rest length, skipping
+					over any pinned point masses.
+					<br>
+				</p>
+				<p>
+				<h3 style="text-align: center;">Observations</h3>
+				<strong>Observations from Low to High ks:</strong>
+
+				<img src="../hw4_IMGs/hw4_p2_ks.png" alt="ks">
+
+				I noticed that with a smaller spring constant
+				ks, the cloth has more wrinkles. When ks is about 50, the cloth shows many small and fine wrinkles
+				but hardly any large ones. As ks increases, the cloth becomes stiffer. Setting an excessively high
+				value like 500,000, however, leads to erratic behavior and prevents the cloth from reaching a state
+				of static equilibrium.
+				<br>
+				<strong>Observations from Low to High Density:</strong>
+				<img src="../hw4_IMGs/hw4_p2_density.png" alt="Density">
+				A higher density value results in fewer
+				wrinkles, giving the cloth a taut appearance. Conversely, a very low density makes the cloth
+				resemble soft and lightweight materials like taffeta linings and gauzy fabric.
+				<br>
+				<strong>Observations from Low to High Damping:</strong>
+				<img src="../hw4_IMGs/hw4_p2_damping.png" alt="Damping">
+				Damping significantly influences the
+				bounciness of the cloth. The closer the damping is to 0, the more the cloth shakes and the longer it
+				oscillates. A higher damping value results in a calmer cloth movement.
+				<br>
+				In summary, a low ks results in a more flexible and wrinkled cloth, while a high ks leads to
+				stiffness. Density impacts the cloth's response to gravity and external forces, and damping controls
+				the duration of post-disturbance oscillations.
+				<br>
+				Here is the cloth in its default final resting state!
+				<img src="../hw4_IMGs/hw4_p2_default.png" alt="default">
+				</p>
+
+			</div>
+		</section>
+		<!-- Part 3 -->
+		<section id="Part3">
+			<div class="container">
+				<h2 style="text-align: center;">Part 3: Handling collisions with other objects</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					xxxx
+				</p>
+			</div>
+			
+		</section>
+
+		<!-- Part 4 -->
+		<section id="Part4">
+			<div class="container">
+				<h2 style="text-align: center;">Part 4: Handling self-collisions</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+			</div>
+			
+		</section>
+
+		<!-- Part 5 -->
+		<section id="Part5">
+			<div class="container">
+				<h2 style="text-align: center;">Part 5: Cloth Sim</h2>
+				<h3 style="text-align: center;">Overview</h3>
+				<p>
+					...
+				</p>
+			</div>
+
+		</section>
+
+</body>
+
 </html>
