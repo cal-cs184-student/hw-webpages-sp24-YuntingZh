@@ -165,9 +165,14 @@
 			<div class="container">
 				<h2 style="text-align: center;">Part 4: Handling self-collisions</h2>
 				<p>
-					In Part 4, I implemented self-collisions utilizing spatial hashing. Spatial hashing is notably advantageous as it ensures constant time complexity (O(1)) for locating objects on the screen, irrespective of the scale of the world rendered. Although most modern game engines restrict direct internal construction of objects, learning this technique is still beneficial. The method is particularly efficient because hash mapping accurately calculates the value of the target position from a specified key, enhancing both precision and performance in complex simulations.
+					In Part 4, I implemented self-collisions utilizing spatial hashing. Spatial hashing is notably
+					advantageous as it ensures constant time complexity (O(1)) for locating objects on the screen,
+					irrespective of the scale of the world rendered. Although most modern game engines restrict direct
+					internal construction of objects, learning this technique is still beneficial. The method is
+					particularly efficient because hash mapping accurately calculates the value of the target position
+					from a specified key, enhancing both precision and performance in complex simulations.
 				</p>
-				
+
 				<h2>4.1. Implement Cloth::hash_position</h2>
 				<p>
 					The purpose of this function is to map each point mass's position to a specific 3D box.
@@ -273,9 +278,87 @@
 			<div class="container">
 				<h2 style="text-align: center;">Part 5: Cloth Sim</h2>
 				<h3 style="text-align: center;">Overview</h3>
-				<p>
-					...
+				<h2>Understanding Shader Programs and Their Components</h2>
+				<p><strong>Shader Programs:</strong> A shader program in computer graphics is a kind of special program
+					designed to run on a GPU (Graphics Processing Unit). It very efficient at processing
+					large batches of data in parallel, making them perfect for handling complex visual tasks like
+					rendering 3D scenes.</p>
+
+				<p><strong>Vertex and Fragment Shaders:</strong> Within a shader program, there are two fundamental
+					types that work together to produce stunning visual effects: vertex and fragment
+					shaders.</p>
+
+				<p><strong>Vertex Shader:</strong> The first stage in the shading process is the vertex shader. It takes
+					each vertex of a 3D object (defined by its coordinates, normal, color, etc.) and performs operations
+					like transformations and lighting calculations. This stage is responsible for determining where
+					vertices should appear on the screen, laying the groundwork for how the object will look.</p>
+
+				<p><strong>Fragment Shader:</strong> Also known as a pixel shader, the fragment shader comes after the
+					vertex shader in the pipeline. It is responsible for determining the color of individual pixels by
+					calculating effects like lighting and shadows based on the information passed from the vertex
+					shader. The output is the final color that we see on the screen.</p>
+
+				<p>By working in tandem, vertex and fragment shaders create the overall appearance of 3D objects,
+					including lighting and material effects.</p>
+
+				<h2>The Blinn-Phong Shading Model</h2>
+				<p><strong>Blinn-Phong Shading:</strong> This is a shading model used to simulate how light
+					interacts with surfaces. The model breaks down the light into three components:</p>
+				<ul>
+					<li><strong>Ambient Lighting:</strong> This is the basic, non-directional light present in a scene.
+						It acts as a baseline light that ensures objects are never completely dark and doesn't depend on
+						the light source direction or viewer's perspective.</li>
+					<li><strong>Diffuse Lighting:</strong> This represents the light that scatters evenly across a
+						surface. It depends on the angle of the light hitting the object, creating varying intensities
+						and making the shape of the object more discernible.</li>
+					<li><strong>Specular Lighting:</strong> This simulates the bright spots of light that appear on
+						shiny objects. This component is highly dependent on the viewer's position and the surface's
+						properties, like shininess.</li>
+				</ul>
+
+				<p>In my shader implementation, I can manipulate these components independently to understand their
+					impact:</p>
+					<img src="../hw4_IMGs/hw4_p5_Blinn-Phong.png" alt="Blinn-Phong">
+
+				<ul>
+					<li><strong>Ambient Only Screenshot:</strong> This shows the object under ambient light. The
+						object's shape isn't well-defined since this light is uniform.</li>
+					<li><strong>Diffuse Only Screenshot:</strong> This highlights how the object interacts with light,
+						emphasizing its shape and contours.</li>
+					<li><strong>Specular Only Screenshot:</strong> This focuses on the shiny parts where the light
+						source directly reflects.</li>
+					<li><strong>Full Blinn-Phong Model Screenshot:</strong> This combines all three components,
+						showcasing a realistically lit object.</li>
+				</ul>
+
+				<h2>Texture Mapping</h2>
+				<p><strong>Texture Mapping with a Custom Texture:</strong> Texture mapping is about applying images
+					(textures) to 3D objects to add details like colors, patterns, and even bumpiness. By replacing the
+					default texture in the /textures/ directory with my custom one, I can observe how textures
+					dramatically alter an object's appearance.</p>
+				<p><strong>Screenshot with Custom Texture:</strong> This will demonstrate my shader's ability to map a
+					2D image onto a 3D object's surface accurately.</p>
+					<img src="../hw4_IMGs/hw4_p5_texture.png" alt="hw4_p5_texture">
+
+
+				<h2>Bump Mapping vs. Displacement Mapping</h2>
+				<p><strong>Bump Mapping and Displacement Mapping:</strong> Both techniques aim to enhance the realism of
+					3D objects by simulating surface details. Bump mapping alters how light interacts with a surface to
+					create the illusion of depth, while displacement mapping actually modifies the object's geometry
+					based on the texture.</p>
+				<ul>
+					<li><strong>Bump Mapping on Cloth and Sphere Screenshots:</strong> These will show the effect of
+						bump mapping on different objects, illustrating how it simulates a textured surface without
+						changing the geometry.</li>
+						<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" alt="Bump">
+					<li><strong>Displacement Mapping on Sphere Screenshots:</strong> Here, I can compare the actual
+						geometric changes on the sphere.</li>
+						<img src="../hw4_IMGs/hw4_p5_displacement.png" alt="Displacement">
+				</ul>
+				<p> The different levels of coarseness (-o 16 -a 16 vs. -o 128 -a
+					128) will show how displacement mapping behaves with varying mesh densities.
 				</p>
+				<img src="../hw4_IMGs/hw4_p5_compare.png" alt="Bump v.s. Displacement">
 			</div>
 
 		</section>
