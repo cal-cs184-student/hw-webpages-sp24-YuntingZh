@@ -2,10 +2,11 @@
 
 <head>
 	<title>Computer Graphics Homework 4 Report</title>
-	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/mini_style.css">
 </head>
 
 <body>
+	<div class="scrollbar">
 	<header>
 		<div class="container">
 			<div id="branding">
@@ -318,7 +319,7 @@
 
 				<p>In my shader implementation, I can manipulate these components independently to understand their
 					impact:</p>
-					<img src="../hw4_IMGs/hw4_p5_Blinn-Phong.png" alt="Blinn-Phong">
+				<img src="../hw4_IMGs/hw4_p5_Blinn-Phong.png" alt="Blinn-Phong">
 
 				<ul>
 					<li><strong>Ambient Only Screenshot:</strong> This shows the object under ambient light. The
@@ -338,7 +339,7 @@
 					dramatically alter an object's appearance.</p>
 				<p><strong>Screenshot with Custom Texture:</strong> This will demonstrate my shader's ability to map a
 					2D image onto a 3D object's surface accurately.</p>
-					<img src="../hw4_IMGs/hw4_p5_texture.png" alt="hw4_p5_texture">
+				<img src="../hw4_IMGs/hw4_p5_texture.png" alt="hw4_p5_texture">
 
 
 				<h2>Bump Mapping vs. Displacement Mapping</h2>
@@ -350,19 +351,44 @@
 					<li><strong>Bump Mapping on Cloth and Sphere Screenshots:</strong> These will show the effect of
 						bump mapping on different objects, illustrating how it simulates a textured surface without
 						changing the geometry.</li>
-						<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" alt="Bump">
+					<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" alt="Bump">
 					<li><strong>Displacement Mapping on Sphere Screenshots:</strong> Here, I can compare the actual
 						geometric changes on the sphere.</li>
-						<img src="../hw4_IMGs/hw4_p5_displacement.png" alt="Displacement">
+					<img src="../hw4_IMGs/hw4_p5_displacement.png" alt="Displacement">
 				</ul>
 				<p> The different levels of coarseness (-o 16 -a 16 vs. -o 128 -a
 					128) will show how displacement mapping behaves with varying mesh densities.
 				</p>
 				<img src="../hw4_IMGs/hw4_p5_compare.png" alt="Bump v.s. Displacement">
-			</div>
+				<h2>5.5 Environment-Mapped Reflections - Mirror Shader</h2>
+				<p>For this part, I want to create a mirror-like effect on surfaces by reflecting the surrounding
+					environment. This can be achieved
+					by using an environment map (cubemap) to simulate light reflections on a shiny surface.
+				</p>
+				<ol>
+					<li><strong>Shader Setup:</strong> A fragment shader (Mirror.frag) is used to handle the reflection
+						logic, considering the camera's position, the fragment's position on the surface, and the
+						surface normal.</li>
+					<li><strong>Calculating Reflection Vector:</strong> The view direction vector (wo) is calculated
+						from the fragment's position towards the camera.</li>
+					<li><strong>Reflecting the View Vector:</strong> Using GLSL's reflect function, the view vector is
+						reflected around the surface normal to obtain the reflection vector (wi).</li>
+					<li><strong>Sampling the Environment Map:</strong> The reflection vector is used to fetch the
+						corresponding color from the cubemap.</li>
+					<li><strong>Outputting the Reflected Color:</strong> The fetched color is set as the output color of
+						the fragment (out_color), creating the mirror effect on the surface.</li>
 
-		</section>
+				</ol>
+				<img src="../hw4_IMGs/hw4_p5_mirror.png" alt="Mirror">
 
+				<p>Now in with this mirror-like reflections on surfaces, object can dynamically reflecting
+					the surrounding environment. As the camera moves or objects rotate, the reflections change,
+					mimicking the behavior of a real mirror in a 3D environment.</p>
+</body>
+</div>
+
+</section>
+</div> 
 </body>
 
 </html>
