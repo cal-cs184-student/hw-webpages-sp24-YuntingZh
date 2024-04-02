@@ -7,15 +7,16 @@ body {
 }
 
 code {
-    background-color: #2d2d2d; /* Dark background for the code block */
-    color: #c792ea; /* Purpleish text color */
+    background-color: #2d2d2d; 
+    color: #c792ea; 
     padding: 10px;
     display: block;
     margin: 10px 0;
     overflow-x: auto;
-    border-radius: 5px; /* Optional: adds rounded corners to the code block */
-    font-family: monospace; /* Use a monospace font for better readability */
+    border-radius: 5px; 
+    font-family: monospace; 
 }
+
 
 
 .container {

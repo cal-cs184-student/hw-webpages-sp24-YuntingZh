@@ -6,7 +6,6 @@
 </head>
 
 <body>
-	<div class="scrollbar">
 	<header>
 		<div class="container">
 			<div id="branding">
@@ -30,8 +29,16 @@
 		<div class="container">
 			<h2 class="section-title">Overview</h2>
 			<p>
-				...overview: <a href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html"
-					target="_blank">https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw2/index.html
+				In this project, I follow the instruction and implemented a real-time cloth simulation using a mass-spring model. Initially, I
+				constructed a mesh of point masses linked by springs to represent the cloth, then incorporated physical
+				forces and constraints, along with numerical integration, to animate the cloth's movement. The
+				simulation further evolved to handle collisions with other objects and self-collisions. Finally, I
+				employed various GLSL shaders to enhance the cloth’s visual appeal, leveraging the GPU for efficient and
+				realistic lighting effects. This undertaking provided a fascinating insight into animation, blending
+				physics with computational shortcuts to create dynamic, visually captivating simulations.
+				<a
+					href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw4/index.html"
+					target="_blank">Here is the website link for this hw4
 				</a>
 			</p>
 
@@ -39,13 +46,30 @@
 		<!-- Part 1 -->
 		<section id="Part1">
 			<div class="container">
-				<h2 style="text-align: center;">Part 1: Masses and springs</h2>
+				<h2 style="text-align: center;">Part 1: Masses and Springs</h2>
 				<p>
+					This part 1 is the foundation for the cloth simulation, I need to construct a grid
+					composed of numerous point masses. These point masses act as the basic elements that collectively
+					form the cloth structure. I arranged them in a grid layout based on the cloth's
+					designated width and height. Their placement varies slightly depending on whether the cloth is
+					oriented horizontally or vertically, with a touch of randomness added to the vertical placement for
+					added realism.
+				</p>
+				<img src="../hw4_IMGs/hw4_p1.png" alt="Masses and Springs">
+				<p>
+					The next crucial step involved interconnecting these point masses with springs. In this part 1, I
+					did three
+					types of springs – structural, shearing, and bending – each serving a distinct purpose. Structural
+					springs help maintain the grid's form, shearing springs manage diagonal stretching and compression,
+					while bending springs counteract the cloth's tendency to bend. By meticulously integrating these
+					springs, I ensured that our cloth simulation would not only accurately mimic the movements and
+					reactions of real fabric but also display the complex interactions between these fundamental
+					components.
+					<img src="../hw4_IMGs/hw4_p1_constraints.png" alt="structural, shearing, and bending">
 				</p>
 			</div>
-
-
 		</section>
+
 		<!-- Part 2 -->
 		<section id="Part2">
 			<div class="container">
@@ -101,8 +125,8 @@
 				stiffness. Density impacts the cloth's response to gravity and external forces, and damping controls
 				the duration of post-disturbance oscillations.
 				<br>
-				Here is the cloth in its default final resting state!
-				<img src="../hw4_IMGs/hw4_p2_default.png" alt="default">
+				Here is the cloth (pinned 2 and 4 ) in its default final resting state!
+				<img src="../hw4_IMGs/hw4_p2_pinned4.png" alt="default">
 				</p>
 
 			</div>
@@ -351,15 +375,15 @@
 					<li><strong>Bump Mapping on Cloth and Sphere Screenshots:</strong> These will show the effect of
 						bump mapping on different objects, illustrating how it simulates a textured surface without
 						changing the geometry.</li>
-					<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" alt="Bump">
+					<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" class="squarish"alt="Bump">
 					<li><strong>Displacement Mapping on Sphere Screenshots:</strong> Here, I can compare the actual
 						geometric changes on the sphere.</li>
-					<img src="../hw4_IMGs/hw4_p5_displacement.png" alt="Displacement">
+					<img src="../hw4_IMGs/hw4_p5_displacement.png" class="squarish"alt="Displacement">
 				</ul>
 				<p> The different levels of coarseness (-o 16 -a 16 vs. -o 128 -a
 					128) will show how displacement mapping behaves with varying mesh densities.
 				</p>
-				<img src="../hw4_IMGs/hw4_p5_compare.png" alt="Bump v.s. Displacement">
+				<img src="../hw4_IMGs/hw4_p5_compare.png" class="squarish"alt="Bump v.s. Displacement">
 				<h2>5.5 Environment-Mapped Reflections - Mirror Shader</h2>
 				<p>For this part, I want to create a mirror-like effect on surfaces by reflecting the surrounding
 					environment. This can be achieved
@@ -379,7 +403,7 @@
 						the fragment (out_color), creating the mirror effect on the surface.</li>
 
 				</ol>
-				<img src="../hw4_IMGs/hw4_p5_mirror.png" alt="Mirror">
+				<img src="../hw4_IMGs/hw4_p5_mirror.png" class="squarish" alt="Mirror">
 
 				<p>Now in with this mirror-like reflections on surfaces, object can dynamically reflecting
 					the surrounding environment. As the camera moves or objects rotate, the reflections change,
@@ -388,7 +412,7 @@
 </div>
 
 </section>
-</div> 
+
 </body>
 
 </html>

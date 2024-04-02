@@ -14,13 +14,12 @@ body {
 }
 
 header {
-    background: #35424a;
+    background: #49354a;
     color: #ffffff;
     padding-top: 30px;
     min-height: 70px;
     border-bottom: #c792ea 3px solid;
 }
-
 header a {
     color: #ffffff;
     text-decoration: none;
@@ -75,24 +74,30 @@ img {
     height: auto;
     display: block;
     margin: 0 auto;
+    max-width: 800px;
 }
 
 /* Adjust image size as needed */
 section img {
-    max-width: 500px;
+    max-width: 700px; /* Adjust max width for images within sections */
+    height: auto; /* Maintains aspect ratio */
 }
-
+/* Specific styling for squarish images */
+img.squarish {
+    max-width: 400px; /* Limit size for square images */
+    height: auto; /* Maintains aspect ratio */
+}
 /* Style for code elements */
 code {
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #eee;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    background-color: #F7F2F9;
     padding: 2px 6px;
     border-radius: 4px;
+    color: #8E2BCD; /* This sets the text color to purple */
 }
 
 /* Horizontal navigation bar */
 .horizontal-nav ul {
-    background: #333;
     overflow: hidden;
     color: white;
     padding: 0;
