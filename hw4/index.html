@@ -29,15 +29,15 @@
 		<div class="container">
 			<h2 class="section-title">Overview</h2>
 			<p>
-				In this project, I follow the instruction and implemented a real-time cloth simulation using a mass-spring model. Initially, I
+				In this project, I follow the instruction and implemented a real-time cloth simulation using a
+				mass-spring model. Initially, I
 				constructed a mesh of point masses linked by springs to represent the cloth, then incorporated physical
 				forces and constraints, along with numerical integration, to animate the cloth's movement. The
 				simulation further evolved to handle collisions with other objects and self-collisions. Finally, I
 				employed various GLSL shaders to enhance the cloth’s visual appeal, leveraging the GPU for efficient and
 				realistic lighting effects. This undertaking provided a fascinating insight into animation, blending
 				physics with computational shortcuts to create dynamic, visually captivating simulations.
-				<a
-					href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw4/index.html"
+				<a href="https://cal-cs184-student.github.io/hw-webpages-sp24-YuntingZh/hw4/index.html"
 					target="_blank">Here is the website link for this hw4
 				</a>
 			</p>
@@ -176,6 +176,7 @@
 					</li>
 				</ul>
 				<img src="../hw4_IMGs/hw4_p3_plane.png" alt="plane">
+				<img src="../hw4_IMGs/hw4_p3_plane_withTexture.png" alt="plane">
 				</p>
 				<p>
 					Integrating these methods into the Cloth::simulate function ensured realistic interactions between
@@ -346,8 +347,9 @@
 				<img src="../hw4_IMGs/hw4_p5_Blinn-Phong.png" alt="Blinn-Phong">
 
 				<ul>
-					<li><strong>Ambient Only Screenshot:</strong> This shows the object under ambient light. The
-						object's shape isn't well-defined since this light is uniform.</li>
+					<li><strong>Ambient Only Screenshot:</strong> This shows the object under ambient light. The obejct
+						seems to be very dark is because I set <code> vec3 ambient = u_color.rgb * 0.1;</code> and also
+						it's default gray color. If set as 0.5, it won't be so dark.</li>
 					<li><strong>Diffuse Only Screenshot:</strong> This highlights how the object interacts with light,
 						emphasizing its shape and contours.</li>
 					<li><strong>Specular Only Screenshot:</strong> This focuses on the shiny parts where the light
@@ -375,15 +377,15 @@
 					<li><strong>Bump Mapping on Cloth and Sphere Screenshots:</strong> These will show the effect of
 						bump mapping on different objects, illustrating how it simulates a textured surface without
 						changing the geometry.</li>
-					<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" class="squarish"alt="Bump">
+					<img src="../hw4_IMGs/hw4_p5_bumpmaping.png" class="squarish" alt="Bump">
 					<li><strong>Displacement Mapping on Sphere Screenshots:</strong> Here, I can compare the actual
 						geometric changes on the sphere.</li>
-					<img src="../hw4_IMGs/hw4_p5_displacement.png" class="squarish"alt="Displacement">
+					<img src="../hw4_IMGs/hw4_p5_displacement.png" class="squarish" alt="Displacement">
 				</ul>
 				<p> The different levels of coarseness (-o 16 -a 16 vs. -o 128 -a
 					128) will show how displacement mapping behaves with varying mesh densities.
 				</p>
-				<img src="../hw4_IMGs/hw4_p5_compare.png" class="squarish"alt="Bump v.s. Displacement">
+				<img src="../hw4_IMGs/hw4_p5_compare.png" class="squarish" alt="Bump v.s. Displacement">
 				<h2>5.5 Environment-Mapped Reflections - Mirror Shader</h2>
 				<p>For this part, I want to create a mirror-like effect on surfaces by reflecting the surrounding
 					environment. This can be achieved
